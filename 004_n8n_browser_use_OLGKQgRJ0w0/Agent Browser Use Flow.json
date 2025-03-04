@@ -1,0 +1,188 @@
+{
+  "name": "agent-browser-use-flow",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "fa8fb168-9476-4b46-88e7-09eb21581c81",
+      "name": "When chat message received",
+      "webhookId": "5327efd3-9223-461d-a75a-1387b6e299fe"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "You are the helpful assistant with useful BrowserUse tools to execute web tasks.\n\n1. Please use Run Task when trying to execute web task.\n2. Please use Get Task Status to get the current task status.\n3. When the task is finished, call Get Task to get the results.\n\nHelp the user with the following: {{}}",
+        "options": {
+          "maxIterations": 50
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        220,
+        0
+      ],
+      "id": "6af1fee1-fc88-4722-9179-57965c14b561",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        120,
+        260
+      ],
+      "id": "ae94ebbe-f72b-4c7e-b523-f8972c452b09",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "VytWkQ0CA5yghGIf",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "connectionType": "local",
+        "instructions": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Instructions', ``, 'string') }}",
+        "aiProvider": "google",
+        "headful": true
+      },
+      "type": "CUSTOM.browserUseTool",
+      "typeVersion": 1,
+      "position": [
+        320,
+        260
+      ],
+      "id": "b1280ff8-ffce-4a40-be49-72e1de68fd0f",
+      "name": "Browser Use",
+      "credentials": {
+        "browserUseLocalBridgeApi": {
+          "id": "V5HW3VZJeodhd8xk",
+          "name": "Browser Use Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "connectionType": "local",
+        "operation": "getTaskStatus",
+        "taskId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Task_ID', ``, 'string') }}"
+      },
+      "type": "CUSTOM.browserUseTool",
+      "typeVersion": 1,
+      "position": [
+        480,
+        280
+      ],
+      "id": "57727ccd-3213-4952-a7cf-c54f79161733",
+      "name": "Browser Use1",
+      "credentials": {
+        "browserUseLocalBridgeApi": {
+          "id": "V5HW3VZJeodhd8xk",
+          "name": "Browser Use Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "connectionType": "local",
+        "operation": "getTask",
+        "taskId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Task_ID', ``, 'string') }}"
+      },
+      "type": "CUSTOM.browserUseTool",
+      "typeVersion": 1,
+      "position": [
+        600,
+        180
+      ],
+      "id": "f520c7d2-ba73-4e29-a4c5-0a097339c0ce",
+      "name": "Browser Use2",
+      "credentials": {
+        "browserUseLocalBridgeApi": {
+          "id": "V5HW3VZJeodhd8xk",
+          "name": "Browser Use Cloud account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Browser Use": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Browser Use1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Browser Use2": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "02333cf2-2d9c-4bc2-9188-0292e74302de",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5e393c6f44392d3936ffca2e9e2dac28fed614d65a5879457461b30357ac3cd9"
+  },
+  "id": "bksATOVoHMz7welt",
+  "tags": []
+}
