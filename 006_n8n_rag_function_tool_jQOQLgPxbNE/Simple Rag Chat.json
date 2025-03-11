@@ -1,0 +1,852 @@
+{
+  "name": "Simple Rag Chat",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "# RAG with Function Toolings\n\nAI Agents sẽ tự lựa chọn dùng RAG để query data hoặc sử dụng ExecuteQuery tools để chạy nếu RAG không đáp ứng được yêu cầu.",
+        "height": 760,
+        "width": 1060
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        -180
+      ],
+      "id": "265cabcf-effc-41c0-bf10-6688b156cf4a",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        1140,
+        -20
+      ],
+      "id": "b5eddfa6-3144-4ba3-8289-958a13ea661c",
+      "name": "When chat message received",
+      "webhookId": "3160ba93-5709-4b3a-9820-7f1276821fbb"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are QQ Travel Assitant you can use Supabase Vector Store Tool to perform similarity search. Lets priority this tool first.\n\nFor complex request that required SQL query then you have the access to a Postgres database containing hotel information in Vietnam, you have the ability to run SQL queries to retrieve specific hotel data when needed. The Postgres tool allows you to search, filter, and analyze hotel information to provide accurate and relevant responses to user queries.\n\nAlways explain your reasoning when deciding to use the Postgres tool, formulate your SQL query clearly, and interpret the results for the user in natural language."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1360,
+        -20
+      ],
+      "id": "3ba12ac3-9749-49d3-8dae-49deb0e16976",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('When chat message received').item.json.sessionId }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        1460,
+        200
+      ],
+      "id": "98323bd0-4669-408c-bac4-f5c3c17b146d",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "NtTQg31814wKMvzj",
+          "name": "Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "qq_travel",
+        "toolDescription": "=# Similarity Search Travel Information Tool\nThis tool performs semantic similarity searches on a vector database containing tour information. It finds tours that match user queries by semantic meaning rather than exact keyword matching.\nDatabase Content\nThe database contains tours with information about:\nTour names and destinations\nPricing (original and current)\nRatings and review counts\nIncluded amenities and departure dates\nAvailable seats and suitable audiences\nSeasonal availability and discounts\nWhen to Use\nUse this tool to find relevant tour information based on natural language queries such as:\n\"Find beach tours with good ratings\"\n\"Show affordable family vacations\"\n\"Are there tours to Vietnam in July?\"\n\"What weekend getaways are discounted?\"\nThe tool returns the 5 most semantically similar tour options from the database, helping users find travel options that best match their interests and requirements.",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "topK": 5,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        1600,
+        200
+      ],
+      "id": "442c2faa-57e1-4fd6-af8a-5c6e51e3e244",
+      "name": "Supabase Vector Store",
+      "credentials": {
+        "supabaseApi": {
+          "id": "UHYVVoHCTEa2MKnZ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1620,
+        360
+      ],
+      "id": "723b349b-67c2-44fd-b6be-c4160c7f567f",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "7kuaUk9u2MPvl2ab",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "o3-mini",
+          "mode": "list",
+          "cachedResultName": "o3-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1300,
+        200
+      ],
+      "id": "570f72c8-da99-4665-8586-914706329b66",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "7kuaUk9u2MPvl2ab",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# Database Setup and Sample Data Flow\n\n## Chuẩn bị\n- Supabase account với credentials dùng Transaction Pooler\n- AI providers: OpenAI hoặc OpenRouter, Ollama\n- Google OAuth\n- Sample Google Sheets data\n\n## Thực hành\n- Chạy node khởi tạo Vector DB.\n- Chạy node khởi tạo bảng mẫu.\n- Chạy node Google Sheet Trigger manually để test hoặc bật Production Mode.",
+        "height": 1340,
+        "width": 1160,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        -320
+      ],
+      "id": "2c5901c3-d65d-4368-bf8e-c08cbe927722",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ $json.content }}",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "id",
+                "value": "={{ $json.metadata.id }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1,
+      "position": [
+        600,
+        680
+      ],
+      "id": "dedbf822-5fb6-4d5a-ac18-72cc0d3e12e0",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        340,
+        780
+      ],
+      "id": "81d5c8e0-4e14-43ae-a3c8-ef8e245aa279",
+      "name": "Embeddings OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "7kuaUk9u2MPvl2ab",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.textSplitterCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        620,
+        820
+      ],
+      "id": "6fd7b0c4-466b-417f-9637-0e6e1f5ecbaa",
+      "name": "Character Text Splitter"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $('Prepare Embed Data').all()"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        360,
+        440
+      ],
+      "id": "c65b7f24-7ca5-4be7-b338-7ecf3070d22f",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "=# Postgres Database Query Tool\nThis tool executes SQL queries on a PostgreSQL database containing tour information. Use it to find, filter, and analyze tour data.\nTable Schema Summary\nThe \"tours\" table includes details like tour ID, name, destination, pricing, ratings, available seats, descriptions, and seasonal information.\nUsage\nFormulate SQL queries that target the \"tours\" table to retrieve specific information.\nExample Queries\n-- Find tours by destination\nSELECT tour_name, current_price, rating FROM tours \nWHERE destination ILIKE '%paris%' ORDER BY rating DESC;\n\n-- Find affordable high-rated tours\nSELECT tour_name, destination, current_price \nFROM tours WHERE rating > 4 AND current_price < 1000;\n\n-- Find tours with available seats in a specific season\nSELECT tour_name, destination, available_seats \nFROM tours WHERE available_seats > 0 AND season = 'Summer';\n\nUse proper SQL syntax for best results. The tool will execute your query and return matching tour data.",
+        "operation": "executeQuery",
+        "query": "{{ $fromAI('sql_query') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.5,
+      "position": [
+        1900,
+        160
+      ],
+      "id": "b333675f-070b-4021-89af-f09ee04c87c2",
+      "name": "Postgres",
+      "credentials": {
+        "postgres": {
+          "id": "NtTQg31814wKMvzj",
+          "name": "Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- Enable the pgvector extension to work with embedding vectors\n-- create extension vector;\n\n-- Create a table to store your documents\ncreate table documents (\n  id bigserial primary key,\n  content text, -- corresponds to Document.pageContent\n  metadata jsonb, -- corresponds to Document.metadata\n  embedding vector(1536) -- 1536 works for OpenAI embeddings, change if needed\n);\n\n-- Create a function to search for documents\ncreate function match_documents (\n  query_embedding vector(1536),\n  match_count int default null,\n  filter jsonb DEFAULT '{}'\n) returns table (\n  id bigint,\n  content text,\n  metadata jsonb,\n  similarity float\n)\nlanguage plpgsql\nas $$\n#variable_conflict use_column\nbegin\n  return query\n  select\n    id,\n    content,\n    metadata,\n    1 - (documents.embedding <=> query_embedding) as similarity\n  from documents\n  where metadata @> filter\n  order by documents.embedding <=> query_embedding\n  limit match_count;\nend;\n$$;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -200,
+        100
+      ],
+      "id": "d7df0588-7416-43f5-b13e-4aa8227715f5",
+      "name": "Tạo Vector Database",
+      "credentials": {
+        "postgres": {
+          "id": "NtTQg31814wKMvzj",
+          "name": "Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tours",
+          "mode": "list",
+          "cachedResultName": "tours"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {
+            "price_original": 0,
+            "current_price": 0,
+            "rating": 0,
+            "reviews_count": 0,
+            "available_seats": 0,
+            "booking_months_advance": 0
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "tour_name",
+              "displayName": "tour_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "destination",
+              "displayName": "destination",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "duration",
+              "displayName": "duration",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "price_original",
+              "displayName": "price_original",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "current_price",
+              "displayName": "current_price",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "rating",
+              "displayName": "rating",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "reviews_count",
+              "displayName": "reviews_count",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "includes",
+              "displayName": "includes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "departure_dates",
+              "displayName": "departure_dates",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "available_seats",
+              "displayName": "available_seats",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "suitable_for",
+              "displayName": "suitable_for",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "description",
+              "displayName": "description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "booking_months_advance",
+              "displayName": "booking_months_advance",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "season",
+              "displayName": "season",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "discount_percentage",
+              "displayName": "discount_percentage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "is_holiday",
+              "displayName": "is_holiday",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "is_weekend",
+              "displayName": "is_weekend",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "historical_data",
+              "displayName": "historical_data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        0,
+        640
+      ],
+      "id": "d9123197-0aa7-4db2-94c1-9816ec0b3f79",
+      "name": "Tạo mới hoặc cập nhật dữ liệu",
+      "credentials": {
+        "postgres": {
+          "id": "NtTQg31814wKMvzj",
+          "name": "Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "options": {
+          "queryName": "match_documents"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        540,
+        440
+      ],
+      "id": "bcaab6ae-849b-445b-a21b-30d5d018f053",
+      "name": "Tạo documents vào vector DB",
+      "credentials": {
+        "supabaseApi": {
+          "id": "UHYVVoHCTEa2MKnZ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "tableId": "documents",
+        "filterType": "string",
+        "filterString": "=metadata->>id=eq.{{ $json.metadata.id }}"
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        180,
+        440
+      ],
+      "id": "dd3994ff-e5a0-43cf-90d5-5588ed3f02cb",
+      "name": "Xoá embed document cũ",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "UHYVVoHCTEa2MKnZ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1cLl19ECzQuaGVl5xFxfbh0pvkMahOw70YyDp_xKypi4/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1cLl19ECzQuaGVl5xFxfbh0pvkMahOw70YyDp_xKypi4/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -200,
+        440
+      ],
+      "id": "b9c087a3-b9f5-453a-9661-c4462d56eeec",
+      "name": "Google Sheets Trigger1",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "b25vVq96dIYEOaOu",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nconst item = $input.all()[0];\nconst headers = {};\n  \nfor (const key in item.json) {\n  const value = item.json[key];\n  headers[key] = typeof value\n}\n\nconst tableName = 'tours'; // Change this to your desired table name\n\n// Map JavaScript types to PostgreSQL types\nfunction mapTypeToPostgresType(jsType) {\n  const typeMap = {\n    'string': 'text',\n    'number': 'numeric',\n    'boolean': 'boolean',\n    'object': 'jsonb',\n    'array': 'jsonb'\n  };\n  \n  return typeMap[jsType] || 'text';\n}\n\n// Generate column definitions\nlet columnDefinitions = [];\nfor (const [column, type] of Object.entries(headers)) {\n  const postgresType = mapTypeToPostgresType(type);\n  columnDefinitions.push(`\"${column}\" ${postgresType}`);\n}\n\n// Add primary key (assuming tour_id is the primary key)\ncolumnDefinitions[0] += ' PRIMARY KEY';\n\n// Create the SQL query\nconst createTableSQL = `\nCREATE TABLE public.${tableName} (\n  ${columnDefinitions.join(',\\n  ')}\n) WITH (OIDS=FALSE);\n\n-- Add policies for Supabase\nCREATE POLICY \"Allow Transaction Pooler to Select Resources\" \nON public.${tableName} \nFOR SELECT \nTO authenticated \nUSING (true);\n\nCREATE POLICY \"Allow Transaction Pooler to Insert Resources\" \nON public.${tableName} \nFOR INSERT \nTO authenticated \nWITH CHECK (true);\n\nCREATE POLICY \"Allow Transaction Pooler to Update Resources\" \nON public.${tableName} \nFOR UPDATE \nTO authenticated \nUSING (true) \nWITH CHECK (true);\n\nCREATE POLICY \"Allow Transaction Pooler to Delete Resources\" \nON public.${tableName} \nFOR DELETE \nTO authenticated \nUSING (true);\n`;\n\nreturn { json: { sql: createTableSQL } };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        280
+      ],
+      "id": "0a935dd2-0078-4e4d-b95d-0f284f6f9c37",
+      "name": "Generate SQL query"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const data = item.json;\n  \n  // Dynamically build content from all fields\n  const content = Object.entries(data)\n    .map(([key, value]) => `${key}: ${value}`)\n    .join('\\n');\n\n  // Dynamically build metadata with type handling\n  const metadata = Object.entries(data).reduce((acc, [key, value]) => {\n    // Auto-detect and convert types\n    let processedValue = value;\n    \n    // Handle numeric values\n    if (!isNaN(value) && value !== '') {\n      processedValue = Number(value);\n    }\n    // Handle boolean-like strings\n    else if (typeof value === 'string' && ['yes', 'no', 'true', 'false'].includes(value.toLowerCase())) {\n      processedValue = value.toLowerCase() === 'yes' || value.toLowerCase() === 'true';\n    }\n    // Handle comma-separated lists\n    else if (typeof value === 'string' && value.includes(',')) {\n      processedValue = value.split(',').map(item => item.trim());\n    }\n    // Preserve other values\n    else {\n      processedValue = value;\n    }\n\n    return {\n      ...acc,\n      [key]: processedValue\n    };\n  }, {});\n\n  return {\n    json: {\n      content,\n      metadata\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 1,
+      "position": [
+        0,
+        440
+      ],
+      "id": "6ef78120-959a-47d9-bdb0-01da100684da",
+      "name": "Prepare Embed Data"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "{{ $json.sql }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        180,
+        280
+      ],
+      "id": "b9d5cc30-02cc-4604-a9d0-8a8422cf0b9b",
+      "name": "Tạo bảng",
+      "credentials": {
+        "postgres": {
+          "id": "NtTQg31814wKMvzj",
+          "name": "Supabase"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1cLl19ECzQuaGVl5xFxfbh0pvkMahOw70YyDp_xKypi4/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1cLl19ECzQuaGVl5xFxfbh0pvkMahOw70YyDp_xKypi4/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        -200,
+        280
+      ],
+      "id": "deffac18-0dd8-42a0-aab6-ef0828d5dc16",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "b25vVq96dIYEOaOu",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Tạo documents vào vector DB",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Tạo documents vào vector DB",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Tạo documents vào vector DB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Xoá embed document cũ": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    },
+    "Google Sheets Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Tạo mới hoặc cập nhật dữ liệu",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Prepare Embed Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate SQL query": {
+      "main": [
+        [
+          {
+            "node": "Tạo bảng",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Embed Data": {
+      "main": [
+        [
+          {
+            "node": "Xoá embed document cũ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "Generate SQL query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "11d548f1-ddf6-4313-9d87-06e4b52b7d4e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5e393c6f44392d3936ffca2e9e2dac28fed614d65a5879457461b30357ac3cd9"
+  },
+  "id": "0enfaiG0JD9INX9B",
+  "tags": []
+}
