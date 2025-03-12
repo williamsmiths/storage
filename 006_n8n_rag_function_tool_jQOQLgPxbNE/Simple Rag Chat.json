@@ -3,15 +3,15 @@
   "nodes": [
     {
       "parameters": {
-        "content": "# RAG with Function Toolings\n\nAI Agents sẽ tự lựa chọn dùng RAG để query data hoặc sử dụng ExecuteQuery tools để chạy nếu RAG không đáp ứng được yêu cầu.",
-        "height": 760,
+        "content": "# RAG with Function callings\n\nAI Agents sẽ tự lựa chọn dùng RAG để query data hoặc sử dụng ExecuteQuery tools để chạy nếu RAG không đáp ứng được yêu cầu.\n\nLưu ý: Chỉ có những AI model nào support function calls mới sử dụng được tính năng này. Tham khảo danh sách này: https://python.langchain.com/docs/integrations/chat/",
+        "height": 880,
         "width": 1060
       },
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
         1040,
-        -180
+        -300
       ],
       "id": "265cabcf-effc-41c0-bf10-6688b156cf4a",
       "name": "Sticky Note"
@@ -842,7 +842,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "11d548f1-ddf6-4313-9d87-06e4b52b7d4e",
+  "versionId": "09d11c5b-6ed3-4ddb-a936-569f2947c530",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "5e393c6f44392d3936ffca2e9e2dac28fed614d65a5879457461b30357ac3cd9"
