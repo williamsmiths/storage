@@ -1,0 +1,326 @@
+{
+  "name": "Zalo Setup",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-zalo-vn.zaloWebServer",
+      "typeVersion": 1,
+      "position": [
+        60,
+        -260
+      ],
+      "id": "56022560-205f-4b71-84b5-3617186ff8d6",
+      "name": "Zalo Web Server"
+    },
+    {
+      "parameters": {
+        "operation": "stopServer"
+      },
+      "type": "n8n-nodes-zalo-vn.zaloWebServer",
+      "typeVersion": 1,
+      "position": [
+        300,
+        -260
+      ],
+      "id": "9484159c-39e8-47ae-a17e-ebd242292005",
+      "name": "Zalo Web Server1"
+    },
+    {
+      "parameters": {
+        "event": "oauthCallback"
+      },
+      "type": "n8n-nodes-zalo-vn.zaloTrigger",
+      "typeVersion": 1,
+      "position": [
+        300,
+        280
+      ],
+      "id": "3035df00-19be-4228-a6c0-7cc7fd6ab1ae",
+      "name": "OAuth Callback",
+      "webhookId": "46b9d2a9-eba1-4006-b456-a73cd6a50f6e",
+      "credentials": {
+        "zaloApi": {
+          "id": "6t92d0ztTnm1RAqi",
+          "name": "Zalo account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "generatePkce",
+        "appId": "",
+        "redirectUri": "https://zalo-n8n.kieng.io.vn/webhook/46b9d2a9-eba1-4006-b456-a73cd6a50f6e/callback"
+      },
+      "type": "n8n-nodes-zalo-vn.zalo",
+      "typeVersion": 1,
+      "position": [
+        300,
+        20
+      ],
+      "id": "412875a6-f365-4f0f-98dc-6dff5856d9dd",
+      "name": "Generate PKCE parameters",
+      "credentials": {
+        "zaloApi": {
+          "id": "6t92d0ztTnm1RAqi",
+          "name": "Zalo account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-zalo-vn.zaloTrigger",
+      "typeVersion": 1,
+      "position": [
+        720,
+        200
+      ],
+      "id": "b83b9eb0-f98b-4e19-ab6c-7562df124b62",
+      "name": "Zalo Trigger",
+      "webhookId": "61a95c38-a39c-4218-9ac7-d30e64cd3850",
+      "credentials": {
+        "zaloApi": {
+          "id": "6t92d0ztTnm1RAqi",
+          "name": "Zalo account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "options": {
+          "systemMessage": "Bạn là trợ lý Zalo OA hãy giúp khách hàng trả lời câu hỏi của họ."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1120,
+        200
+      ],
+      "id": "e5bb4c72-0797-451b-86f1-6a1bec36d30f",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1060,
+        420
+      ],
+      "id": "4344a7b3-3892-46a7-b420-38b9a1290b36",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "7kuaUk9u2MPvl2ab",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "{{$json.sender.id}}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        1220,
+        420
+      ],
+      "id": "1c55d9b7-f4ce-4213-9a45-1e202481ed5f",
+      "name": "Window Buffer Memory"
+    },
+    {
+      "parameters": {
+        "content": "### Đây là dữ liệu mẫu nhận được từ tin nhắn của Zalo. \n\nDo hạn chế trong việc sử dụng môi trường test nên mình để đây để mọi người hình dung được cấu trúc  tin nhắn.\n\n```json\n[\n  {\n    \"event_name\": \"user_send_text\",\n    \"app_id\": \"xxx\",\n    \"sender\": {\n      \"id\": \"xxx\"\n    },\n    \"recipient\": {\n      \"id\": \"xxx\"\n    },\n    \"message\": {\n      \"text\": \"xxx\",\n      \"msg_id\": \"xxx\"\n    },\n    \"timestamp\": \"xxx\",\n    \"user_id_by_app\": \"xxx\"\n  }\n]\n```",
+        "height": 520,
+        "width": 440,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        620,
+        -380
+      ],
+      "id": "81701868-a805-426d-81d0-ca6aeb304f8d",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "userId": "={{ $('Zalo Trigger').item.json.sender.id }}",
+        "message": "={{ $json.output }}"
+      },
+      "type": "n8n-nodes-zalo-vn.zalo",
+      "typeVersion": 1,
+      "position": [
+        1580,
+        200
+      ],
+      "id": "7b995bc3-62ad-471b-b307-770d783a3bce",
+      "name": "Zalo",
+      "credentials": {
+        "zaloApi": {
+          "id": "6t92d0ztTnm1RAqi",
+          "name": "Zalo account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Dùng trong trường hợp cần cài đặt sub-domain.\n(Bỏ qua bước này nếu bạn sử dụng domain)\n",
+        "height": 300,
+        "width": 520
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        20,
+        -380
+      ],
+      "id": "3f8b4981-dfc5-45f6-81c3-61552812e2a5",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "### Generate PKCE - Dùng trong trường hợp khi mình cần tạo mới accessToken.\n\n\n\n\n\n\n\n\n\n\n\n### Oauth Callback - Để nhận kết quả từ Zalo vào tạo ra accessToken",
+        "height": 480,
+        "width": 520,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        20,
+        -40
+      ],
+      "id": "e4441967-6ee5-4393-892f-5d97fb6e4ebb",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "### Ví dụ node AI Agent sẽ nhận message từ \n`{{ $json.message.text }}`",
+        "height": 100,
+        "width": 260,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        40
+      ],
+      "id": "3526fac5-0387-4465-b5e1-56e23b4b88f3",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "### Việc reply lại tin nhắn sẽ dựa vào\n`{{ $('Zalo Trigger').item.json.sender.id }}`",
+        "height": 120,
+        "width": 320,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1500,
+        40
+      ],
+      "id": "a4a1c60a-6060-421b-8bbd-e2809897ade0",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "# Chuẩn bị\n\n- Domain cho n8n\n- n8n-nodes-zalo-vn\n- Zalo OA account\n\n# Cài đặt\n\n1. Cài **n8n-nodes-zalo-vn** community node.\n2. Zalo OA\n    1. Cài đặt [https://developers.zalo.me/app/](https://developers.zalo.me/app/)\n        1. ID ứng dụng\n        2. Khoá bí mật của ứng dụng\n        3. OAID - https://oa.zalo.me/manage/oa\n    2. Xác thực domain\n        1. Domain\n            1. DNS - TXT setup\n            2. Xác thực\n        2. Sub-domain\n            1. Sử dụng Zalo Web Server Tool\n            2. Xác thực\n                1. Thiết lập đường dẫn từ internet đến server local \n            3. Tắt server sau khi xác thực xong\n    3. Setup Zalo Credentials ở n8n node\n    4. Setup Zalo On OAuth Callback\n        1. Lấy callback URL: ….\n    5. Setup Official Account Callback Url\n        1. Cập nhật OAuth Callback vừa lấy ở bước d(i)\n    6. Bật danh sách sự kiện webhook.\n    7. Đăng kí sử dụng API.\n    8. Tạo accessToken\n        1. Dùng Zalo Generate PKCE Parameters\n        2. Lấy callback url ở bước d(i)\n    9. Tạo Zalo Trigger\n        1. Lấy callback để setup vào Webhook của Zalo: ….\n",
+        "height": 980,
+        "width": 520,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -600,
+        -380
+      ],
+      "id": "3b0a4e02-aae4-4c1a-b4b4-4ee697426053",
+      "name": "Sticky Note5"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Zalo Web Server1": {
+      "main": [
+        []
+      ]
+    },
+    "OAuth Callback": {
+      "main": [
+        []
+      ]
+    },
+    "Zalo Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Zalo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b6631da0-cfc0-4e95-b8bd-84f4322a2962",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5e393c6f44392d3936ffca2e9e2dac28fed614d65a5879457461b30357ac3cd9"
+  },
+  "id": "rxldoo1llfbkih99",
+  "tags": []
+}
