@@ -1,0 +1,1084 @@
+{
+  "name": "Personal Knowledge Management",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        140,
+        1700
+      ],
+      "id": "6a1cc5aa-34c4-47ac-8559-1eeda832012f",
+      "name": "When chat message received",
+      "webhookId": "8e79dd28-1a27-47ac-810b-55729c27f110"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a helpful assistant, you have the ability to use Notion Tools to find Database Page, PageId to interact and create new page and new block into page.\n\nYou are also have the ability to make a http tool to get the transcript of a video by video_id:\nFor example: https://www.youtube.com/watch?v=5MZmSJtP7fE then get the video_id =5MZmSJtP7fE then call the http tool."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        360,
+        340
+      ],
+      "id": "696ce56d-d511-49be-85b1-73c41332a8f8",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash-exp",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        120,
+        600
+      ],
+      "id": "c7f14da9-e30d-4bfd-ba4f-56a5a4005aff",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "VytWkQ0CA5yghGIf",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        260,
+        600
+      ],
+      "id": "69fb4664-43a2-4b28-af12-b1e89f8a3f57",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use this tool to create a new Page",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Parent_Page', `The URL of the Parent page`, 'string') }}",
+          "mode": "url"
+        },
+        "title": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Title', `The title of the new Page`, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notionTool",
+      "typeVersion": 2.2,
+      "position": [
+        460,
+        620
+      ],
+      "id": "b1ffac1c-fd8d-47d0-a697-3938a3bad5eb",
+      "name": "Notion",
+      "credentials": {
+        "notionApi": {
+          "id": "ricgFSt0RLvphcmg",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use this tool to find a specific Page",
+        "operation": "search",
+        "text": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Search_Text', `The text to search for the page`, 'string') }}",
+        "limit": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Limit', `Number of results to return`, 'number') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notionTool",
+      "typeVersion": 2.2,
+      "position": [
+        600,
+        620
+      ],
+      "id": "6bc94923-934c-4dd5-b7ba-bc75d4c6240e",
+      "name": "Notion1",
+      "credentials": {
+        "notionApi": {
+          "id": "ricgFSt0RLvphcmg",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use this tool to get all blocks of a Page",
+        "resource": "block",
+        "operation": "getAll",
+        "blockId": {
+          "__rl": true,
+          "mode": "url",
+          "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Block', ``, 'string') }}"
+        },
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', ``, 'boolean') }}",
+        "fetchNestedBlocks": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Also_Fetch_Nested_Blocks', ``, 'boolean') }}",
+        "simplifyOutput": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Simplify_Output', ``, 'boolean') }}"
+      },
+      "type": "n8n-nodes-base.notionTool",
+      "typeVersion": 2.2,
+      "position": [
+        1040,
+        620
+      ],
+      "id": "09411ed4-3248-43e1-bc23-52902da1dbd5",
+      "name": "Notion3",
+      "credentials": {
+        "notionApi": {
+          "id": "ricgFSt0RLvphcmg",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use this tool to append a Block into a Page",
+        "resource": "block",
+        "blockId": {
+          "__rl": true,
+          "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Block', `The URL of the Block`, 'string') }}",
+          "mode": "url"
+        }
+      },
+      "type": "n8n-nodes-base.notionTool",
+      "typeVersion": 2.2,
+      "position": [
+        920,
+        620
+      ],
+      "id": "33f02f51-3d37-45dc-a678-51e9fc6f8920",
+      "name": "Notion4",
+      "credentials": {
+        "notionApi": {
+          "id": "ricgFSt0RLvphcmg",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Database', ``, 'string') }}",
+          "mode": "id",
+          "__regex": "^([0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12})"
+        },
+        "title": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Title', ``, 'string') }}",
+        "simple": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Simplify', ``, 'boolean') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notionTool",
+      "typeVersion": 2.2,
+      "position": [
+        460,
+        880
+      ],
+      "id": "662e3090-49ac-496d-b34d-60962ae4c529",
+      "name": "Notion5",
+      "credentials": {
+        "notionApi": {
+          "id": "ricgFSt0RLvphcmg",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "get",
+        "pageId": {
+          "__rl": true,
+          "mode": "url",
+          "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Database_Page', ``, 'string') }}"
+        },
+        "simple": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Simplify', ``, 'boolean') }}"
+      },
+      "type": "n8n-nodes-base.notionTool",
+      "typeVersion": 2.2,
+      "position": [
+        600,
+        880
+      ],
+      "id": "df91b95d-28ae-4b48-9ead-4972f9a0f2a7",
+      "name": "Notion6",
+      "credentials": {
+        "notionApi": {
+          "id": "ricgFSt0RLvphcmg",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "mode": "url",
+          "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Database_Page', ``, 'string') }}",
+          "__regex": "(?:https|http)://www\\.notion\\.so/(?:[a-z0-9-]{2,}/)?(?:[a-zA-Z0-9-]{1,}-)?([0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12})"
+        },
+        "simple": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Simplify', ``, 'boolean') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notionTool",
+      "typeVersion": 2.2,
+      "position": [
+        720,
+        880
+      ],
+      "id": "09554568-9752-4d65-8062-c8b2dd14466c",
+      "name": "Notion7",
+      "credentials": {
+        "notionApi": {
+          "id": "ricgFSt0RLvphcmg",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "database",
+        "databaseId": {
+          "__rl": true,
+          "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Database', ``, 'string') }}",
+          "mode": "id",
+          "__regex": "^([0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12})"
+        },
+        "simple": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Simplify', ``, 'boolean') }}"
+      },
+      "type": "n8n-nodes-base.notionTool",
+      "typeVersion": 2.2,
+      "position": [
+        920,
+        880
+      ],
+      "id": "3fe34294-60cc-484c-9d1d-cb0d1d9b2586",
+      "name": "Notion8",
+      "credentials": {
+        "notionApi": {
+          "id": "ricgFSt0RLvphcmg",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "database",
+        "operation": "search",
+        "text": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Search_Text', ``, 'string') }}",
+        "limit": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Limit', ``, 'number') }}",
+        "simple": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Simplify', ``, 'boolean') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notionTool",
+      "typeVersion": 2.2,
+      "position": [
+        1120,
+        880
+      ],
+      "id": "7b6574d8-12d7-4294-aa56-ab674c616877",
+      "name": "Notion9",
+      "credentials": {
+        "notionApi": {
+          "id": "ricgFSt0RLvphcmg",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "databaseId": {
+          "__rl": true,
+          "value": "184097dc-ec8d-80ed-9a47-dc59b9fd0ba6",
+          "mode": "list",
+          "cachedResultName": "Activities",
+          "cachedResultUrl": "https://www.notion.so/184097dcec8d80ed9a47dc59b9fd0ba6"
+        }
+      },
+      "type": "n8n-nodes-base.notionTrigger",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        -600
+      ],
+      "id": "a89d6656-62b6-4afe-a26b-d56d3ccd5a4f",
+      "name": "Notion Trigger",
+      "credentials": {
+        "notionApi": {
+          "id": "ricgFSt0RLvphcmg",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "fd0cb22e-b304-4587-893f-e44b53713fab",
+              "leftValue": "={{ $json.URL }}",
+              "rightValue": "youtube.com/watch",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -100,
+        -600
+      ],
+      "id": "9e538a7d-0a82-4ba6-b6e1-bd96712eaac9",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nconst result = {\n  \"video_id\" : \"\"\n}\nfor (const item of $input.all()) {\n  result[\"video_id\"] = item.json.URL.split(\"=\")[1]\n}\n\nreturn result"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        120,
+        -700
+      ],
+      "id": "e1fe9e07-9aa9-4030-b784-e5a80a78dff3",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "url": "https://snowy-sea-ec64.frosty-base-76ce.workers.dev/",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "video_id",
+              "value": "={{ $('Code').item.json.video_id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        460,
+        -700
+      ],
+      "id": "1738c272-ee63-4f43-a730-6d23a59d054a",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "dataPropertyName": "=data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.xml",
+      "typeVersion": 1,
+      "position": [
+        640,
+        -700
+      ],
+      "id": "910a86b9-0c00-4e53-80bd-3e87bff1ae11",
+      "name": "XML"
+    },
+    {
+      "parameters": {
+        "jsCode": "let items = []\n\n\nlet temp_transcript = \"\";\n\nfor (const item of $input.all()) {\n  for (const element of item.json.transcript.text) {\n    temp_transcript += element._;\n\n    while (temp_transcript.length >= 2000) {\n      items.push({ transcript: temp_transcript.slice(0, 2000) });\n      temp_transcript = temp_transcript.slice(2000); // Keep the remaining part\n    }\n  }\n}\n\n// Push any remaining transcript that didn't reach 2000 characters\nif (temp_transcript.length > 0) {\n  items.push({ transcript: temp_transcript });\n}\n\nreturn items"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        -700
+      ],
+      "id": "9d18585e-a318-4845-b16e-6d47baabedb5",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "pageId": {
+          "__rl": true,
+          "value": "https://www.notion.so/hoangnb/Personal-Knowledge-Management-1c1097dcec8d8033af26f8ba30d1b96c",
+          "mode": "url"
+        },
+        "title": "={{ $('Notion Trigger').item.json.Name }}",
+        "blockUi": {
+          "blockValues": [
+            {
+              "textContent": "={{ $('Notion Trigger').item.json.Name }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        300,
+        -700
+      ],
+      "id": "bc76a62a-b43e-40ae-b255-a6fe6c720c0c",
+      "name": "Notion10",
+      "credentials": {
+        "notionApi": {
+          "id": "ricgFSt0RLvphcmg",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "block",
+        "blockId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "blockUi": {
+          "blockValues": [
+            {
+              "textContent": "={{ $('Loop Over Items').item.json.transcript }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        1460,
+        -620
+      ],
+      "id": "fcf343c9-9502-4a15-9396-72d6ffe912ae",
+      "name": "Notion11",
+      "credentials": {
+        "notionApi": {
+          "id": "ricgFSt0RLvphcmg",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "batchSize": "=1",
+        "options": {
+          "reset": false
+        }
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1080,
+        -700
+      ],
+      "id": "8f006879-fa5a-47a9-b970-2a1a725d9ad0",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1640,
+        -580
+      ],
+      "id": "6b9d449f-cac1-4132-8dcc-5f55251418ac",
+      "name": "Wait",
+      "webhookId": "81763e72-3e2f-4722-86f1-7af82894b691"
+    },
+    {
+      "parameters": {
+        "resource": "block",
+        "operation": "getAll",
+        "blockId": {
+          "__rl": true,
+          "value": "={{ $('Notion10').item.json.url }}",
+          "mode": "url"
+        },
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        1280,
+        -620
+      ],
+      "id": "391ef84f-b4fa-4b4b-87b0-f5cbc009b6e7",
+      "name": "Notion14",
+      "credentials": {
+        "notionApi": {
+          "id": "ricgFSt0RLvphcmg",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Get the transcript of a Youtube video",
+        "url": "http://localhost:24601/transcript",
+        "sendQuery": true,
+        "parametersQuery": {
+          "values": [
+            {
+              "name": "video_id"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        320,
+        880
+      ],
+      "id": "fd84e977-a84b-4809-95a0-f71d0a228ac0",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a helpful assistant, you have the ability to use Notion Tools to find Database Page, PageId to interact and create new page and new block into page.\n\nYou have the ability to use Firecrawl tool to scape/crawl web\nYou are also have the ability to make a http tool to get the transcript of a video by video_id:\nFor example: https://www.youtube.com/watch?v=5MZmSJtP7fE then get the video_id =5MZmSJtP7fE then call the http tool."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        560,
+        1700
+      ],
+      "id": "fd92cbf0-2411-42f1-996e-410fc9cfb655",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        460,
+        1960
+      ],
+      "id": "6850b854-eac3-450c-9f60-4f2360406fef",
+      "name": "Simple Memory1"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "This is the Notion MCP Client, use it got get the available tools to interact with Notion"
+      },
+      "type": "n8n-nodes-mcp.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        780,
+        1960
+      ],
+      "id": "e3c9860c-62ac-485c-9891-47cd6b4d9e02",
+      "name": "MCP Notion Client",
+      "credentials": {
+        "mcpClientApi": {
+          "id": "TqsYc120gYPahBoK",
+          "name": "MCP Client (STDIO) account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use MCP client to execute tools",
+        "operation": "executeTool",
+        "toolName": "={{ $fromAI(\"toolname\", \"Populate this with the tool name from the list tools result\") }}",
+        "toolParameters": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Tool_Parameters', ``, 'json') }}"
+      },
+      "type": "n8n-nodes-mcp.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        980,
+        1960
+      ],
+      "id": "ee93a7c2-ca46-4106-aecf-55f98ba1284c",
+      "name": "MCP Client1",
+      "credentials": {
+        "mcpClientApi": {
+          "id": "TqsYc120gYPahBoK",
+          "name": "MCP Client (STDIO) account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        280,
+        1960
+      ],
+      "id": "638b2edf-c06b-49b8-89c6-02da9f2c5083",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "7kuaUk9u2MPvl2ab",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Get the transcript of a Youtube video",
+        "url": "http://localhost:24601/transcript",
+        "sendQuery": true,
+        "parametersQuery": {
+          "values": [
+            {
+              "name": "video_id"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        620,
+        1960
+      ],
+      "id": "3a846548-3a71-40cf-9b95-a1bb5e499a5a",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-mcp.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        1920
+      ],
+      "id": "05b07bd8-4df3-4699-925c-3fe149d0b5c6",
+      "name": "Firecrawl",
+      "credentials": {
+        "mcpClientApi": {
+          "id": "Ai3zpl9T87c2zEHY",
+          "name": "Firecrawl "
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeTool",
+        "toolName": "={{ $fromAI(\"toolname\", \"Populate this with the tool name from the list tools result\") }}",
+        "toolParameters": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Tool_Parameters', ``, 'json') }}"
+      },
+      "type": "n8n-nodes-mcp.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        1240,
+        1920
+      ],
+      "id": "923f54b0-9910-4774-b95b-0ce707ff91cf",
+      "name": "Firecrawl Execute",
+      "credentials": {
+        "mcpClientApi": {
+          "id": "Ai3zpl9T87c2zEHY",
+          "name": "Firecrawl "
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "HTTP Request": [
+      {
+        "json": {
+          "data": "<?xml version=\"1.0\" encoding=\"utf-8\" ?><transcript><text start=\"0.399\" dur=\"4.641\">so here we have our AI agent currently</text><text start=\"2.48\" dur=\"4.88\">searching the internet to find out when</text><text start=\"5.04\" dur=\"4.2\">did William Wallace die it says August</text><text start=\"7.36\" dur=\"4.72\">23rd</text><text start=\"9.24\" dur=\"5.559\">1305 wonder if I paste that in online</text><text start=\"12.08\" dur=\"5.039\">will it tell me was when William Wallace</text><text start=\"14.799\" dur=\"5.041\">died there you go so in today&amp;#39;s video</text><text start=\"17.119\" dur=\"4.841\">we&amp;#39;re going to create this AI agent that</text><text start=\"19.84\" dur=\"4.4\">can access the internet it&amp;#39;s going to be</text><text start=\"21.96\" dur=\"3.36\">a low code solution so pretty much no</text><text start=\"24.24\" dur=\"3\">code there&amp;#39;s going to be one little</text><text start=\"25.32\" dur=\"4.24\">chunk don&amp;#39;t want to else share it with</text><text start=\"27.24\" dur=\"4.999\">you and we&amp;#39;ll be putting it into our web</text><text start=\"29.56\" dur=\"4.08\">scrap tool which is this here and again</text><text start=\"32.239\" dur=\"2.961\">don&amp;#39;t worry I&amp;#39;ll be walking you through</text><text start=\"33.64\" dur=\"2.72\">this whole thing but the one thing I</text><text start=\"35.2\" dur=\"4.4\">want to point out is that we&amp;#39;re going to</text><text start=\"36.36\" dur=\"6.519\">be using craw for AI which is an</text><text start=\"39.6\" dur=\"6.119\">open-source llm friendly web crawler and</text><text start=\"42.879\" dur=\"4.241\">scraper what&amp;#39;s a web crawler and scraper</text><text start=\"45.719\" dur=\"3.921\">well if you want to go on Google and</text><text start=\"47.12\" dur=\"5.119\">search in this here for example all of</text><text start=\"49.64\" dur=\"4.8\">this content that you can see all this</text><text start=\"52.239\" dur=\"4.601\">text and image</text><text start=\"54.44\" dur=\"4.4\">content you might want this information</text><text start=\"56.84\" dur=\"3.879\">and you would have a scraper scrape this</text><text start=\"58.84\" dur=\"4.559\">information from the site so that you</text><text start=\"60.719\" dur=\"4.241\">have it at hand a web crawler is</text><text start=\"63.399\" dur=\"3.321\">something which would move through and</text><text start=\"64.96\" dur=\"4.04\">click on the links to then go to the</text><text start=\"66.72\" dur=\"3.84\">next page so a web craw and a scraper</text><text start=\"69\" dur=\"3.799\">can essentially go on the internet and</text><text start=\"70.56\" dur=\"4.16\">get loads of information which is cool</text><text start=\"72.799\" dur=\"4.881\">now the reason we&amp;#39;re using that is</text><text start=\"74.72\" dur=\"5.28\">because the original method I tried</text><text start=\"77.68\" dur=\"4.92\">which is just using a very simple get</text><text start=\"80\" dur=\"4.4\">request doesn&amp;#39;t work and I&amp;#39;ll tell you</text><text start=\"82.6\" dur=\"3.879\">why so first a little bit background</text><text start=\"84.4\" dur=\"5.52\">what is an HTTP</text><text start=\"86.479\" dur=\"6.68\">request you have you right and your</text><text start=\"89.92\" dur=\"6.12\">you&amp;#39;re using a browser see Chrome right</text><text start=\"93.159\" dur=\"6.721\">and when you put in a URL your browser</text><text start=\"96.04\" dur=\"3.84\">then sends some</text><text start=\"100.92\" dur=\"5.68\">HTTP get</text><text start=\"103.32\" dur=\"5.04\">request with that</text><text start=\"106.6\" dur=\"4.04\">URL</text><text start=\"108.36\" dur=\"5.16\">to a bunch of network stuff but</text><text start=\"110.64\" dur=\"5.68\">essentially to the server I.E the other</text><text start=\"113.52\" dur=\"4.959\">computer which hosts this URL so</text><text start=\"116.32\" dur=\"5.52\">basically says get this website for me</text><text start=\"118.479\" dur=\"5.441\">and then that will send back your we</text><text start=\"121.84\" dur=\"4.48\">send back their website which will be</text><text start=\"123.92\" dur=\"4.839\">like an HTML file on some JavaScript and</text><text start=\"126.32\" dur=\"5.76\">stuff right and then your browser will</text><text start=\"128.759\" dur=\"6.961\">render that HTML So in theory here if I</text><text start=\"132.08\" dur=\"4.439\">could just get the llm to just you do</text><text start=\"135.72\" dur=\"3.64\">this</text><text start=\"136.519\" dur=\"5.641\">request I could theoretically get this</text><text start=\"139.36\" dur=\"5.76\">HTML back and then I would have the web</text><text start=\"142.16\" dur=\"5.439\">page and now LMS are trained in all of</text><text start=\"145.12\" dur=\"4.88\">the data on the internet so surely they</text><text start=\"147.599\" dur=\"5.841\">know how to do this and they know how to</text><text start=\"150\" dur=\"6.8\">pass this I.E how to to read it right so</text><text start=\"153.44\" dur=\"5.64\">that was my my original idea and I did</text><text start=\"156.8\" dur=\"3.96\">implement this and I&amp;#39;ll show you how but</text><text start=\"159.08\" dur=\"3.12\">it doesn&amp;#39;t work or it kind of works but</text><text start=\"160.76\" dur=\"4.52\">there&amp;#39;s a bunch of problems and those</text><text start=\"162.2\" dur=\"6.44\">problems are fixed by using Crow for AI</text><text start=\"165.28\" dur=\"5.72\">as well as using rag as a essentially a</text><text start=\"168.64\" dur=\"4.64\">vector database that we can use to</text><text start=\"171\" dur=\"4.319\">minimize um how much information we have</text><text start=\"173.28\" dur=\"5.84\">to give the the language model at any</text><text start=\"175.319\" dur=\"6.681\">given time so here we have my why you</text><text start=\"179.12\" dur=\"6.52\">need a web scrip flow which is an AI</text><text start=\"182\" dur=\"7.12\">agent here we&amp;#39;ve got a model Gro model</text><text start=\"185.64\" dur=\"5.8\">Gro is a free API endpoint for large</text><text start=\"189.12\" dur=\"4\">language models so you don&amp;#39;t have to pay</text><text start=\"191.44\" dur=\"3.719\">um but it is limited so there&amp;#39;s only a</text><text start=\"193.12\" dur=\"3.8\">certain number of tokens you can use</text><text start=\"195.159\" dur=\"3.64\">which will get to a minute we have a</text><text start=\"196.92\" dur=\"3.879\">memory so I can remember some of the</text><text start=\"198.799\" dur=\"3.641\">messages you&amp;#39;ve said in this specific</text><text start=\"200.799\" dur=\"3.72\">session and then we have a couple of</text><text start=\"202.44\" dur=\"3.92\">tools on this tools we&amp;#39;ve included a</text><text start=\"204.519\" dur=\"3.601\">Wikipedia so it can search Wikipedia</text><text start=\"206.36\" dur=\"4.84\">which is pretty cool and then we have</text><text start=\"208.12\" dur=\"7.039\">this HTTP request workflow now if we go</text><text start=\"211.2\" dur=\"7.119\">and see this HTTP request workflow here</text><text start=\"215.159\" dur=\"5.08\">essentially we use the HTTP request tool</text><text start=\"218.319\" dur=\"5.56\">which if you recall from that it&amp;#39;s um</text><text start=\"220.239\" dur=\"5.92\">this is HTTP request and it&amp;#39;s just a get</text><text start=\"223.879\" dur=\"4.72\">request so we have a tool that&amp;#39;s built</text><text start=\"226.159\" dur=\"5.841\">into na10 for this and all you have to</text><text start=\"228.599\" dur=\"7.601\">give the tool is a method IE get and a</text><text start=\"232\" dur=\"6.92\">URL like Google right so very simple it</text><text start=\"236.2\" dur=\"5.36\">already exists so we can pass this to</text><text start=\"238.92\" dur=\"4.56\">directly to the AI agent and the thing</text><text start=\"241.56\" dur=\"4.92\">that is amazing and blowing my mind is</text><text start=\"243.48\" dur=\"4.399\">the AI agents actually can go and use it</text><text start=\"246.48\" dur=\"3.92\">like it just figures out itself to go</text><text start=\"247.879\" dur=\"4.321\">use it like if we double click here you</text><text start=\"250.4\" dur=\"3.919\">can see and don&amp;#39;t worry about following</text><text start=\"252.2\" dur=\"5.4\">along with this we&amp;#39;ll do an actual</text><text start=\"254.319\" dur=\"5.241\">stepbystep creation of this here so</text><text start=\"257.6\" dur=\"4.08\">don&amp;#39;t worry about the specifics just try</text><text start=\"259.56\" dur=\"4.96\">and get the gist of what&amp;#39;s Happening</text><text start=\"261.68\" dur=\"5.04\">HTTP request method right and then the</text><text start=\"264.52\" dur=\"5.76\">URL which we had just shown</text><text start=\"266.72\" dur=\"5.199\">you here right this method in url</text><text start=\"270.28\" dur=\"3.44\">we&amp;#39;re letting those be defined</text><text start=\"271.919\" dur=\"3.56\">automatically by the model so we&amp;#39;re not</text><text start=\"273.72\" dur=\"3.84\">telling the model what it is we just</text><text start=\"275.479\" dur=\"3.241\">give it a name and we say you decide</text><text start=\"277.56\" dur=\"3.919\">what it should</text><text start=\"278.72\" dur=\"5.4\">be and then it figures it out which is</text><text start=\"281.479\" dur=\"5.28\">amazing so this does work it will go on</text><text start=\"284.12\" dur=\"4.76\">the internet and find stuff but then</text><text start=\"286.759\" dur=\"6.321\">when it brings it back it can either</text><text start=\"288.88\" dur=\"7.159\">just run appearing indefinitely so</text><text start=\"293.08\" dur=\"6.64\">forever or it just dies out because it</text><text start=\"296.039\" dur=\"6.081\">reaches a token limit so that kind of</text><text start=\"299.72\" dur=\"7.4\">hint out what are the problems with only</text><text start=\"302.12\" dur=\"8.28\">using HTTP get request I.E why are we</text><text start=\"307.12\" dur=\"5.56\">using craw for AI in the first place</text><text start=\"310.4\" dur=\"6.76\">well the first problem which we had just</text><text start=\"312.68\" dur=\"8.12\">said is tokens so what are tokens tokens</text><text start=\"317.16\" dur=\"5.92\">are the units that you send to a large</text><text start=\"320.8\" dur=\"5.92\">language model now large language models</text><text start=\"323.08\" dur=\"6.16\">obviously use text I.E strings string is</text><text start=\"326.72\" dur=\"5.759\">just text and computer speak and then a</text><text start=\"329.24\" dur=\"4.84\">letter is called a Char or a character</text><text start=\"332.479\" dur=\"3.961\">in computer speak right and so this</text><text start=\"334.08\" dur=\"6.6\">world tokens doesn&amp;#39;t get passed into to</text><text start=\"336.44\" dur=\"7.44\">the llm as tokens an llm will decide how</text><text start=\"340.68\" dur=\"6.84\">it should be tokenized and it could be</text><text start=\"343.88\" dur=\"7.2\">to as one token e n is one and then s is</text><text start=\"347.52\" dur=\"6.399\">another or it could be you know t o and</text><text start=\"351.08\" dur=\"4.04\">then K NS whatever right doesn&amp;#39;t matter</text><text start=\"353.919\" dur=\"3.641\">but the point I&amp;#39;m trying to get out here</text><text start=\"355.12\" dur=\"6\">is that one word could be more than one</text><text start=\"357.56\" dur=\"5.639\">token so what happens is and normal llm</text><text start=\"361.12\" dur=\"5.04\">would have like a</text><text start=\"363.199\" dur=\"5\">128,000 token limit something like that</text><text start=\"366.16\" dur=\"6.28\">which sounds like a lot but it could</text><text start=\"368.199\" dur=\"7.12\">maybe be you know say 70 or 880,000 wats</text><text start=\"372.44\" dur=\"6.479\">now that seems like loads when would you</text><text start=\"375.319\" dur=\"6.481\">ever send in more than like 70,000 WS</text><text start=\"378.919\" dur=\"5.4\">well if we come back to this here if we</text><text start=\"381.8\" dur=\"4.239\">wanted the llm to go to this Google page</text><text start=\"384.319\" dur=\"3.32\">and get this information for it to be</text><text start=\"386.039\" dur=\"3.321\">able to read this information the way</text><text start=\"387.639\" dur=\"2.601\">you and I are looking and interacting</text><text start=\"389.36\" dur=\"3.2\">here</text><text start=\"390.24\" dur=\"5.079\">if we right click we go to inspect this</text><text start=\"392.56\" dur=\"4.8\">will open up the developer tools section</text><text start=\"395.319\" dur=\"5.6\">and from here we have elements and this</text><text start=\"397.36\" dur=\"5.44\">elements is your HTML file so this is</text><text start=\"400.919\" dur=\"5.481\">what&amp;#39;s coming back in your um get</text><text start=\"402.8\" dur=\"5.48\">request here so we have this HTML file</text><text start=\"406.4\" dur=\"6.199\">here and you can see if we just scroll</text><text start=\"408.28\" dur=\"6.16\">down there are loads of words</text><text start=\"412.599\" dur=\"5.121\">essentially loads of what would be</text><text start=\"414.44\" dur=\"5.319\">tokenized you can see that even just</text><text start=\"417.72\" dur=\"3.12\">like these divs for example these don&amp;#39;t</text><text start=\"419.759\" dur=\"3.44\">really mean anything they&amp;#39;re just</text><text start=\"420.84\" dur=\"4.88\">closing out these other ones you can see</text><text start=\"423.199\" dur=\"4.081\">each indentation is like a new layer but</text><text start=\"425.72\" dur=\"3.8\">there&amp;#39;s still Words which have to be</text><text start=\"427.28\" dur=\"4.319\">tokenized additionally if you see these</text><text start=\"429.52\" dur=\"4.16\">three little dots click on that that&amp;#39;s</text><text start=\"431.599\" dur=\"4.961\">because there is more text look like</text><text start=\"433.68\" dur=\"5.72\">look there load right so suddenly if you</text><text start=\"436.56\" dur=\"7.479\">have all of this let me see if I can</text><text start=\"439.4\" dur=\"7.16\">copy the whole thing command a no I</text><text start=\"444.039\" dur=\"5.761\">don&amp;#39;t think so if</text><text start=\"446.56\" dur=\"5.639\">I do this no I don&amp;#39;t know basically what</text><text start=\"449.8\" dur=\"4.679\">I&amp;#39;m going to get at is that this could</text><text start=\"452.199\" dur=\"4.081\">be 70,000 WS especially if you&amp;#39;re going</text><text start=\"454.479\" dur=\"5.521\">to then have like three or four web</text><text start=\"456.28\" dur=\"7.479\">pages so the problem becomes how do I</text><text start=\"460\" dur=\"5.759\">use that right well the craw for AI is</text><text start=\"463.759\" dur=\"2.72\">able to just get the information that</text><text start=\"465.759\" dur=\"3.761\">you</text><text start=\"466.479\" dur=\"5.201\">need is it removes loads of the the</text><text start=\"469.52\" dur=\"4.16\">fluff around this right which is good</text><text start=\"471.68\" dur=\"5.44\">because then suddenly it reduces the</text><text start=\"473.68\" dur=\"6.44\">number of tokens which is great now the</text><text start=\"477.12\" dur=\"5.56\">second way that we can reduce tokens is</text><text start=\"480.12\" dur=\"5.68\">also the kind of second problem here</text><text start=\"482.68\" dur=\"5.72\">which is no memory right so if we just</text><text start=\"485.8\" dur=\"4.799\">do a simple HTTP get we have to do it</text><text start=\"488.4\" dur=\"4.28\">every time and say part of the answer is</text><text start=\"490.599\" dur=\"4.481\">on this web page part of the answer is</text><text start=\"492.68\" dur=\"5.479\">on another web page well we would have</text><text start=\"495.08\" dur=\"5.44\">to pass in both web pages right and if</text><text start=\"498.159\" dur=\"3.88\">you checked it in a previous session so</text><text start=\"500.52\" dur=\"3\">like a different chat and then in this</text><text start=\"502.039\" dur=\"4.081\">chat try to do it again you&amp;#39;ll have to</text><text start=\"503.52\" dur=\"3.959\">go and find it again and try and scrape</text><text start=\"506.12\" dur=\"3.72\">the page and blah blah blah and suddenly</text><text start=\"507.479\" dur=\"4.961\">you got a bazillion tokens and loads of</text><text start=\"509.84\" dur=\"6.24\">power and it&amp;#39;s a nightmare so the way to</text><text start=\"512.44\" dur=\"8.32\">reduce the tokens again is to introduce</text><text start=\"516.08\" dur=\"8.079\">a memory specifically a vector database</text><text start=\"520.76\" dur=\"5.92\">so if we open up here which is our web</text><text start=\"524.159\" dur=\"5.441\">scraping subflow so essentially this</text><text start=\"526.68\" dur=\"6.96\">this flow here this web scraping flow</text><text start=\"529.6\" dur=\"6.08\">this is a tool that we pass in to the AI</text><text start=\"533.64\" dur=\"5\">agent and in here you can see that we</text><text start=\"535.68\" dur=\"5.12\">have a superbase vector store super base</text><text start=\"538.64\" dur=\"4.04\">is just a vector database provider</text><text start=\"540.8\" dur=\"5.12\">they&amp;#39;re essentially a rapper for</text><text start=\"542.68\" dur=\"6.44\">postgress as far as I can tell postgress</text><text start=\"545.92\" dur=\"6.599\">just being a popular SQL database</text><text start=\"549.12\" dur=\"7.159\">provider SQL being a popular language</text><text start=\"552.519\" dur=\"6.281\">used to create tables so really it&amp;#39;s</text><text start=\"556.279\" dur=\"6.041\">just a big glorified database table</text><text start=\"558.8\" dur=\"4.44\">place right so that we store in there</text><text start=\"562.32\" dur=\"5.759\">the</text><text start=\"563.24\" dur=\"7.039\">um the the web pages why well as I sayen</text><text start=\"568.079\" dur=\"3.521\">the tokens here if we were to pass in a</text><text start=\"570.279\" dur=\"4.361\">web page</text><text start=\"571.6\" dur=\"5.04\">right say an entire web page a gazillion</text><text start=\"574.64\" dur=\"4.52\">lines if you to pass this in this could</text><text start=\"576.64\" dur=\"5.439\">be you know whatever 60,000 tokens you</text><text start=\"579.16\" dur=\"6\">want two web pages 120,000 tokens you</text><text start=\"582.079\" dur=\"6.041\">want three web pages 100 whatever a lost</text><text start=\"585.16\" dur=\"5\">track 180,000 tokens too much can&amp;#39;t do</text><text start=\"588.12\" dur=\"4.279\">it boom you&amp;#39;re done right so what we</text><text start=\"590.16\" dur=\"4.64\">could do instead is if we&amp;#39;re able to put</text><text start=\"592.399\" dur=\"4.961\">these in a vector database we would be</text><text start=\"594.8\" dur=\"5.32\">able to chunk these up break them into</text><text start=\"597.36\" dur=\"6.28\">sections right and store each of these</text><text start=\"600.12\" dur=\"6.92\">sections now the beneficial part here is</text><text start=\"603.64\" dur=\"6.56\">that then before we even consider</text><text start=\"607.04\" dur=\"6.6\">passing it to the llm we can first do</text><text start=\"610.2\" dur=\"5.84\">rag teval augmented generation so we can</text><text start=\"613.64\" dur=\"5.8\">have a search go and be like right</text><text start=\"616.04\" dur=\"5.56\">what&amp;#39;s the query the query is you know</text><text start=\"619.44\" dur=\"4.079\">what color is a labrador so we could</text><text start=\"621.6\" dur=\"4.28\">then instead of going and getting all</text><text start=\"623.519\" dur=\"5.081\">these Google Pages which are Labradors</text><text start=\"625.88\" dur=\"4.639\">Labrador colors dog colors whatever</text><text start=\"628.6\" dur=\"4.72\">right it say all of that we could just</text><text start=\"630.519\" dur=\"5.361\">take one chunk which specifically talks</text><text start=\"633.32\" dur=\"4.68\">about Labrador colors and then another</text><text start=\"635.88\" dur=\"4.56\">chunk here which talks about you know if</text><text start=\"638\" dur=\"5.2\">that&amp;#39;s different depending on different</text><text start=\"640.44\" dur=\"3.92\">Labradors or different dog breeds or</text><text start=\"643.2\" dur=\"2.759\">whatever I don&amp;#39;t know I don&amp;#39;t know</text><text start=\"644.36\" dur=\"2.68\">anything about dogs that was a bad query</text><text start=\"645.959\" dur=\"3.281\">but you get the point is that it can</text><text start=\"647.04\" dur=\"4.919\">then go and take these little chunks</text><text start=\"649.24\" dur=\"6.96\">which if we say this was you know 60k</text><text start=\"651.959\" dur=\"7.401\">60,000 tokens 1 2 3 4 5 6 7 8 9 10</text><text start=\"656.2\" dur=\"6.319\">divide that by 10 6,000 in each chunk</text><text start=\"659.36\" dur=\"7.52\">here and if we have three chunks 6 12</text><text start=\"662.519\" dur=\"7.081\">18,000 which fits in here so much better</text><text start=\"666.88\" dur=\"4.88\">now additionally memory it brings in</text><text start=\"669.6\" dur=\"4.12\">memory because now if we kill that chat</text><text start=\"671.76\" dur=\"5.4\">session and open up a new one it can</text><text start=\"673.72\" dur=\"5.239\">then come back and reference these</text><text start=\"677.16\" dur=\"5.479\">essentially pages of the internet which</text><text start=\"678.959\" dur=\"8.081\">you have stored in your vector database</text><text start=\"682.639\" dur=\"7.801\">which is cool so the third problem is</text><text start=\"687.04\" dur=\"7.12\">that we have the HTML right which is</text><text start=\"690.44\" dur=\"5.32\">cool if we go back here we have the HTML</text><text start=\"694.16\" dur=\"5.16\">which is cool but we don&amp;#39;t have any</text><text start=\"695.76\" dur=\"4.92\">Dynamic content so for example here if</text><text start=\"699.32\" dur=\"4\">you were to scrap this web page you</text><text start=\"700.68\" dur=\"5.279\">would get that right we would get people</text><text start=\"703.32\" dur=\"4.959\">also ask what does an HTTP get request</text><text start=\"705.959\" dur=\"4.201\">to but we wouldn&amp;#39;t have the information</text><text start=\"708.279\" dur=\"4.641\">which comes when you click on the button</text><text start=\"710.16\" dur=\"6.28\">because it&amp;#39;s hidden it&amp;#39;s Dynamic and so</text><text start=\"712.92\" dur=\"6.32\">this dynamically injected code or</text><text start=\"716.44\" dur=\"6.16\">content we can get that if we use</text><text start=\"719.24\" dur=\"6\">control for AI so it solves that Dynamic</text><text start=\"722.6\" dur=\"4.919\">content problem and it allows us to</text><text start=\"725.24\" dur=\"3.279\">actually get all of the information from</text><text start=\"727.519\" dur=\"4.801\">the</text><text start=\"728.519\" dur=\"7.12\">page now number four is</text><text start=\"732.32\" dur=\"5.879\">asynchronous SL synchronous uh data</text><text start=\"735.639\" dur=\"7.801\">processing so synchronous data</text><text start=\"738.199\" dur=\"7.681\">processing is like a to B to C blah blah</text><text start=\"743.44\" dur=\"5.399\">blah right asynchronous would just be</text><text start=\"745.88\" dur=\"5.56\">the a b and c all get run at the same</text><text start=\"748.839\" dur=\"4.521\">time which means that if this was in</text><text start=\"751.44\" dur=\"4.04\">steps that they would all get done in</text><text start=\"753.36\" dur=\"5.44\">Step One whereas here it would take</text><text start=\"755.48\" dur=\"5.24\">three steps to do it so if we were to do</text><text start=\"758.8\" dur=\"4.839\">this using our own HTTP G we would have</text><text start=\"760.72\" dur=\"4.72\">to wrap this in some weird code to try</text><text start=\"763.639\" dur=\"3.721\">and make it asynchronous to try make it</text><text start=\"765.44\" dur=\"4.92\">run like this craw for AI automatically</text><text start=\"767.36\" dur=\"4.96\">does this which is great so for example</text><text start=\"770.36\" dur=\"5.039\">what that means is if you give a URL for</text><text start=\"772.32\" dur=\"5\">an entire website it can asynchronously</text><text start=\"775.399\" dur=\"3.521\">get all of the pages of the site as</text><text start=\"777.32\" dur=\"5.56\">opposed to one then one then one then</text><text start=\"778.92\" dur=\"8.52\">one so that&amp;#39;s cool finally the fifth one</text><text start=\"782.88\" dur=\"7.519\">is that we have to Advanced Data</text><text start=\"787.44\" dur=\"7.079\">extraction so as I had shown you that</text><text start=\"790.399\" dur=\"6.68\">HTML is a nightmare to look at to try</text><text start=\"794.519\" dur=\"4.88\">and get the right click and inspect to</text><text start=\"797.079\" dur=\"3.961\">try and get the specific information</text><text start=\"799.399\" dur=\"3.44\">we&amp;#39;re after it&amp;#39;s just going to be an</text><text start=\"801.04\" dur=\"3.4\">absolute nightmare to try and find</text><text start=\"802.839\" dur=\"4.281\">anything here and if you try and code</text><text start=\"804.44\" dur=\"5.44\">this the amount of like pattern matching</text><text start=\"807.12\" dur=\"4.92\">reg X you would have to do wouldn&amp;#39;t even</text><text start=\"809.88\" dur=\"3.72\">be funny and you&amp;#39;d have to already pre-</text><text start=\"812.04\" dur=\"4.359\">look at this and figure out what you</text><text start=\"813.6\" dur=\"5.44\">want and stuff at nightmare so craw for</text><text start=\"816.399\" dur=\"4.841\">AI does that for you so why are we using</text><text start=\"819.04\" dur=\"5.12\">it it will redu our</text><text start=\"821.24\" dur=\"4.44\">tokens then we&amp;#39;ve included Vector DB</text><text start=\"824.16\" dur=\"2.6\">which will then bring memory and regist</text><text start=\"825.68\" dur=\"5.2\">tokens</text><text start=\"826.76\" dur=\"6.319\">again and then handles Dynamic data</text><text start=\"830.88\" dur=\"6.319\">processes asynchronously and it will</text><text start=\"833.079\" dur=\"6.44\">handle complex data extraction so now we</text><text start=\"837.199\" dur=\"4.921\">know that why we&amp;#39;re using CW for a and</text><text start=\"839.519\" dur=\"5.801\">not just something simple like</text><text start=\"842.12\" dur=\"6.56\">this let&amp;#39;s start building so we&amp;#39;re going</text><text start=\"845.32\" dur=\"6\">to build this here quick reference is</text><text start=\"848.68\" dur=\"4.959\">that here I&amp;#39;m using the open AI chat</text><text start=\"851.32\" dur=\"6.16\">model because Gro and I had to look</text><text start=\"853.639\" dur=\"7.361\">online if we open up Gro Gro is a free</text><text start=\"857.48\" dur=\"6.159\">API provider for llm inference</text><text start=\"861\" dur=\"4\">essentially when you want to talk to llm</text><text start=\"863.639\" dur=\"3.801\">and you want to programmatically do it</text><text start=\"865\" dur=\"5.079\">using an API key you can get it on grock</text><text start=\"867.44\" dur=\"6.36\">for free the problem is most of the free</text><text start=\"870.079\" dur=\"7.12\">models on Gro are llama based and llama</text><text start=\"873.8\" dur=\"5.76\">doesn&amp;#39;t like to work with Json objects</text><text start=\"877.199\" dur=\"4.361\">it doesn&amp;#39;t see as a string</text><text start=\"879.56\" dur=\"4.199\">essentially what that means if you don&amp;#39;t</text><text start=\"881.56\" dur=\"3.839\">know is that you have say like a Jason</text><text start=\"883.759\" dur=\"5.921\">object which would be some col brace and</text><text start=\"885.399\" dur=\"7.12\">then it&amp;#39;ll like Json colon</text><text start=\"889.68\" dur=\"5.519\">object like this something like that and</text><text start=\"892.519\" dur=\"4.721\">then the other color brace right and</text><text start=\"895.199\" dur=\"4.88\">these would normally be in quotation</text><text start=\"897.24\" dur=\"4.76\">mods now if you to pass this this into a</text><text start=\"900.079\" dur=\"4.481\">large language model and normally</text><text start=\"902\" dur=\"5.44\">process it fine but somehow when you use</text><text start=\"904.56\" dur=\"5.6\">Gro and you pass that in to the large</text><text start=\"907.44\" dur=\"6\">language model it&amp;#39;s like ah I don&amp;#39;t know</text><text start=\"910.16\" dur=\"4.84\">how to handle objects like it&amp;#39;s not</text><text start=\"913.44\" dur=\"3.72\">don&amp;#39;t handle as an object you should</text><text start=\"915\" dur=\"5.8\">handle the whole thing as a string as if</text><text start=\"917.16\" dur=\"7.679\">it were text but anyway so to fix that</text><text start=\"920.8\" dur=\"8.24\">I&amp;#39;m using open AI in open ey I&amp;#39;m only</text><text start=\"924.839\" dur=\"7.92\">using the 40 mini because it is so cheap</text><text start=\"929.04\" dur=\"11.239\">the 40 mini is</text><text start=\"932.759\" dur=\"10\">.15 I&amp;#39;m sure dollars per million tokens</text><text start=\"940.279\" dur=\"7.321\">per million tokens so for reference if</text><text start=\"942.759\" dur=\"8.121\">we go to the open AI API key we&amp;#39;ll go</text><text start=\"947.6\" dur=\"7.599\">here open a i platform playground and if</text><text start=\"950.88\" dur=\"9.199\">we open this up and I&amp;#39;ll just go to API</text><text start=\"955.199\" dur=\"6.56\">reference or dashboard and then API keys</text><text start=\"960.079\" dur=\"3.481\">so I have a bunch of API keys if we go</text><text start=\"961.759\" dur=\"4.161\">to</text><text start=\"963.56\" dur=\"4.639\">usage and we&amp;#39;ll see how much it&amp;#39;s</text><text start=\"965.92\" dur=\"6.719\">actually used or not use cost or use</text><text start=\"968.199\" dur=\"7.481\">activity you can see that today I&amp;#39;ve run</text><text start=\"972.639\" dur=\"6.68\">I don&amp;#39;t know 10 queries or something and</text><text start=\"975.68\" dur=\"7.719\">it&amp;#39;s used 40,000 tokens approximately oh</text><text start=\"979.319\" dur=\"9.041\">yeah 40,000 tokens and um let&amp;#39;s see it</text><text start=\"983.399\" dur=\"7.68\">40,000 tokens 30 of which is uh uncashed</text><text start=\"988.36\" dur=\"4.68\">10,000 which are cashed uncashed are</text><text start=\"991.079\" dur=\"4.76\">more expensive CU you have to go through</text><text start=\"993.04\" dur=\"8.039\">an extra layer to go and get them um but</text><text start=\"995.839\" dur=\"9.721\">if we see the open AI API</text><text start=\"1001.079\" dur=\"9.521\">prices we go on here for many you can</text><text start=\"1005.56\" dur=\"7.759\">see oh I was out by a zero but it&amp;#39;s</text><text start=\"1010.6\" dur=\"7.28\">0.15 so go back to mycal draw let&amp;#39;s get</text><text start=\"1013.319\" dur=\"4.561\">rid of that zero here</text><text start=\"1019.24\" dur=\"6.719\">and uh</text><text start=\"1021.88\" dur=\"6\">15 by a million which means that for my</text><text start=\"1025.959\" dur=\"4.401\">40,000 that I&amp;#39;ve</text><text start=\"1027.88\" dur=\"4.88\">used give or take</text><text start=\"1030.36\" dur=\"3.92\">right that means that it would have cost</text><text start=\"1032.76\" dur=\"4\">me</text><text start=\"1034.28\" dur=\"4\">0</text><text start=\"1036.76\" dur=\"4.76\">06</text><text start=\"1038.28\" dur=\"5.639\">Cent meaning that the cut off here is</text><text start=\"1041.52\" dur=\"7.48\">for a cent meaning I&amp;#39;ve spent less than</text><text start=\"1043.919\" dur=\"6.921\">1 cent for my 10 to 15 queries where</text><text start=\"1049\" dur=\"3.48\">it&amp;#39;s went and script websites brought</text><text start=\"1050.84\" dur=\"4.24\">them back sold them on a vector database</text><text start=\"1052.48\" dur=\"5.16\">blah blah blah so basically if you want</text><text start=\"1055.08\" dur=\"7.08\">something that runs fast and it&amp;#39;s good</text><text start=\"1057.64\" dur=\"8.2\">use the 40 mini this one here 40</text><text start=\"1062.16\" dur=\"5.6\">mini um but if you absolutely cannot</text><text start=\"1065.84\" dur=\"4.76\">spend any money you just don&amp;#39;t have the</text><text start=\"1067.76\" dur=\"5.68\">access or available funds just in case</text><text start=\"1070.6\" dur=\"4.6\">whatever right then try gr it probably</text><text start=\"1073.44\" dur=\"5.88\">won&amp;#39;t work unless you find a work around</text><text start=\"1075.2\" dur=\"9.359\">for Jason um but the other option is hug</text><text start=\"1079.32\" dur=\"8.719\">face which is a place where you can run</text><text start=\"1084.559\" dur=\"5.641\">um run modeles check out data sets Etc</text><text start=\"1088.039\" dur=\"4\">so on hug and face which we&amp;#39;ll go over</text><text start=\"1090.2\" dur=\"4.88\">later anyway because we do have to use</text><text start=\"1092.039\" dur=\"7.441\">hug and face for the free rag embedding</text><text start=\"1095.08\" dur=\"6.76\">so anyway now we know all that let&amp;#39;s um</text><text start=\"1099.48\" dur=\"5\">get into the actual building because now</text><text start=\"1101.84\" dur=\"5.719\">we understand the decision making</text><text start=\"1104.48\" dur=\"4.559\">process behind everything so let&amp;#39;s go</text><text start=\"1107.559\" dur=\"4.041\">right so the first thing you need to do</text><text start=\"1109.039\" dur=\"4.12\">is sign up to na10 I&amp;#39;m running it</text><text start=\"1111.6\" dur=\"3.72\">locally if you want to see how to do</text><text start=\"1113.159\" dur=\"4.121\">that I do have a video all about it</text><text start=\"1115.32\" dur=\"4.16\">it&amp;#39;ll be carded up here link will also</text><text start=\"1117.28\" dur=\"4.48\">be in the description below it&amp;#39;s super</text><text start=\"1119.48\" dur=\"6.12\">simple essentially you just run</text><text start=\"1121.76\" dur=\"5.799\">npx na10 and that&amp;#39;s it it runs which is</text><text start=\"1125.6\" dur=\"4.559\">brilliant completely free or you can do</text><text start=\"1127.559\" dur=\"4.841\">it online 14-day free trial and then you</text><text start=\"1130.159\" dur=\"5\">have to pay $25 a month to run it online</text><text start=\"1132.4\" dur=\"4.44\">so I suggest run it locally so the first</text><text start=\"1135.159\" dur=\"4.281\">thing I want to do is create a</text><text start=\"1136.84\" dur=\"4.6\">workflow and this workflow</text><text start=\"1139.44\" dur=\"4.64\">we have here plus the first step and</text><text start=\"1141.44\" dur=\"4.76\">click first step and we shall do on chat</text><text start=\"1144.08\" dur=\"4.88\">message now this essentially is going to</text><text start=\"1146.2\" dur=\"6.4\">create a chat interface as if it was</text><text start=\"1148.96\" dur=\"5.68\">like chat GPT so let&amp;#39;s click it here and</text><text start=\"1152.6\" dur=\"3.72\">we have this now when chat message</text><text start=\"1154.64\" dur=\"4.72\">received you see this pops up at the</text><text start=\"1156.32\" dur=\"4.68\">bottom click on chat can say hi and then</text><text start=\"1159.36\" dur=\"3.72\">nothing will happen but it will say</text><text start=\"1161\" dur=\"5.76\">successful because it&amp;#39;s not connected to</text><text start=\"1163.08\" dur=\"6.44\">anything so let&amp;#39;s connect it to an AI</text><text start=\"1166.76\" dur=\"6.919\">agent so if we search noes up here we go</text><text start=\"1169.52\" dur=\"6.44\">AI agent click on that and then if we do</text><text start=\"1173.679\" dur=\"5.601\">here agent tools agent cuz it&amp;#39;s going to</text><text start=\"1175.96\" dur=\"5.52\">be given tools source for prompt user</text><text start=\"1179.28\" dur=\"4.44\">message connected chat trigger node</text><text start=\"1181.48\" dur=\"4.88\">which is we just added and the input</text><text start=\"1183.72\" dur=\"5.8\">will be Jason chat input which is this</text><text start=\"1186.36\" dur=\"5.72\">here so on this input you can see schema</text><text start=\"1189.52\" dur=\"5.519\">table Json um and you can just drag and</text><text start=\"1192.08\" dur=\"6.12\">drop that in but it just automatically</text><text start=\"1195.039\" dur=\"5.52\">finds it from here so all good so we now</text><text start=\"1198.2\" dur=\"5.24\">have our AI agent which receives</text><text start=\"1200.559\" dur=\"5.36\">messages this AI agent for reference is</text><text start=\"1203.44\" dur=\"4.719\">just a framework so we have to add in</text><text start=\"1205.919\" dur=\"4.321\">the model we have to add in the memory</text><text start=\"1208.159\" dur=\"4.801\">and then any tools that we want to add</text><text start=\"1210.24\" dur=\"4.439\">in so first let&amp;#39;s add the chat model CU</text><text start=\"1212.96\" dur=\"4.719\">this will actually turn it into a chat</text><text start=\"1214.679\" dur=\"6.081\">bot so these are all the ones we have to</text><text start=\"1217.679\" dur=\"4.601\">to choose from I am going to use open a</text><text start=\"1220.76\" dur=\"4.08\">and I&amp;#39;m going to use Photo because it&amp;#39;s</text><text start=\"1222.28\" dur=\"4.08\">nice and cheap so credentials to connect</text><text start=\"1224.84\" dur=\"3.24\">with you can connect with your</text><text start=\"1226.36\" dur=\"4.84\">credentials here if you click create new</text><text start=\"1228.08\" dur=\"7.719\">credential all you need is an API key to</text><text start=\"1231.2\" dur=\"8.28\">get that if we go API Keys open</text><text start=\"1235.799\" dur=\"7.081\">a and we have this open ey platform</text><text start=\"1239.48\" dur=\"7.24\">playground um and from here we&amp;#39;ll go to</text><text start=\"1242.88\" dur=\"5.96\">dashboard and API keys will be here it&amp;#39;s</text><text start=\"1246.72\" dur=\"3.76\">a long way for a shortcut but we&amp;#39;re here</text><text start=\"1248.84\" dur=\"4.4\">and then we create a new secret key and</text><text start=\"1250.48\" dur=\"5.36\">essentially this is going to be our key</text><text start=\"1253.24\" dur=\"5.4\">that we use like as if it was a door to</text><text start=\"1255.84\" dur=\"5.76\">get into API and to get into open Ai and</text><text start=\"1258.64\" dur=\"5.039\">use their models need to keep this</text><text start=\"1261.6\" dur=\"4.28\">completely private because if someone</text><text start=\"1263.679\" dur=\"4.081\">gets it they can use it and basically</text><text start=\"1265.88\" dur=\"4.799\">opening I thinks it&amp;#39;s you and you&amp;#39;ll get</text><text start=\"1267.76\" dur=\"4.48\">charged so just beware I give it a name</text><text start=\"1270.679\" dur=\"4.281\">and then click create secret key and</text><text start=\"1272.24\" dur=\"8.6\">it&amp;#39;ll pop up or you know I&amp;#39;ll just do</text><text start=\"1274.96\" dur=\"8.16\">here NN Local 2 um create a secret key</text><text start=\"1280.84\" dur=\"4.24\">and here it pops up click copy and then</text><text start=\"1283.12\" dur=\"4.84\">done it&amp;#39;s gone forever you won&amp;#39;t be able</text><text start=\"1285.08\" dur=\"5.599\">to see it again but if we go back to na</text><text start=\"1287.96\" dur=\"4.719\">can then paste that key in here then</text><text start=\"1290.679\" dur=\"4.641\">save and then</text><text start=\"1292.679\" dur=\"4.12\">automatically save it there we go</text><text start=\"1295.32\" dur=\"4.12\">automatically add you in you can now</text><text start=\"1296.799\" dur=\"4.081\">select the model we&amp;#39;ll just go 40 manyu</text><text start=\"1299.44\" dur=\"6.119\">but you can see there&amp;#39;s a bunch of</text><text start=\"1300.88\" dur=\"6.76\">models you can like preview uh audio so</text><text start=\"1305.559\" dur=\"4.6\">you could say use your voice and then</text><text start=\"1307.64\" dur=\"3.8\">get the get the actions from that but</text><text start=\"1310.159\" dur=\"2.481\">we&amp;#39;re just going to use the normal one</text><text start=\"1311.44\" dur=\"4.04\">and that&amp;#39;s as you can see from the</text><text start=\"1312.64\" dur=\"4.88\">asterisk the only one we have to add so</text><text start=\"1315.48\" dur=\"3.88\">we go back to chat and we just say hi</text><text start=\"1317.52\" dur=\"4.12\">again</text><text start=\"1319.36\" dur=\"4.559\">which you can also do if we go back here</text><text start=\"1321.64\" dur=\"4.639\">you get two bits that pop up one here</text><text start=\"1323.919\" dur=\"5.041\">repost the message one reuse if you</text><text start=\"1326.279\" dur=\"7.76\">reuse it just pops up here and then you</text><text start=\"1328.96\" dur=\"6.76\">can press enter or if you re oops repost</text><text start=\"1334.039\" dur=\"3.161\">well then repost the message without you</text><text start=\"1335.72\" dur=\"4.319\">having to do anything</text><text start=\"1337.2\" dur=\"5.359\">else so you go hi how can I assist you</text><text start=\"1340.039\" dur=\"5.681\">today and we see we now have these logs</text><text start=\"1342.559\" dur=\"5.24\">so this is all working perfect input</text><text start=\"1345.72\" dur=\"4.24\">system you&amp;#39;re a helpful assistant human</text><text start=\"1347.799\" dur=\"4.48\">High output hello how can I assist you</text><text start=\"1349.96\" dur=\"5.599\">today so go into the AI agent and open</text><text start=\"1352.279\" dur=\"5.241\">it up we can see if we add options here</text><text start=\"1355.559\" dur=\"4\">we can do system message and this is</text><text start=\"1357.52\" dur=\"4.56\">where you can change what it thinks it</text><text start=\"1359.559\" dur=\"5\">is so you could tell it it&amp;#39;s a marketing</text><text start=\"1362.08\" dur=\"5.4\">assistant or it&amp;#39;s a script writer or</text><text start=\"1364.559\" dur=\"5.801\">whatever you want it to be so we have</text><text start=\"1367.48\" dur=\"4.72\">that that&amp;#39;s cool for the memory let&amp;#39;s</text><text start=\"1370.36\" dur=\"4.28\">add a window buffer memory it&amp;#39;s the</text><text start=\"1372.2\" dur=\"4.079\">easiest one to do context window length</text><text start=\"1374.64\" dur=\"4.36\">is how many messages do you want to</text><text start=\"1376.279\" dur=\"5.081\">remember if we do five that&amp;#39;s fine</text><text start=\"1379\" dur=\"3.96\">because what we can do now is if we say</text><text start=\"1381.36\" dur=\"4.4\">I am</text><text start=\"1382.96\" dur=\"4.44\">look say hi look and then if I say who</text><text start=\"1385.76\" dur=\"4.279\">am</text><text start=\"1387.4\" dur=\"4.24\">I and it will remember it you&amp;#39;ll look</text><text start=\"1390.039\" dur=\"4.161\">blah blah blah but if we reset the</text><text start=\"1391.64\" dur=\"6.32\">session up here so it&amp;#39;s like opening a</text><text start=\"1394.2\" dur=\"7.24\">new chat and I say hi who am I it won&amp;#39;t</text><text start=\"1397.96\" dur=\"5.4\">know because this memory is relative to</text><text start=\"1401.44\" dur=\"5\">the session</text><text start=\"1403.36\" dur=\"5.96\">so now the next thing you want to do is</text><text start=\"1406.44\" dur=\"5.719\">add some tools so let&amp;#39;s move these out</text><text start=\"1409.32\" dur=\"5.479\">the way like</text><text start=\"1412.159\" dur=\"4.921\">so um and we want to add some tools so</text><text start=\"1414.799\" dur=\"6.521\">the first tool we&amp;#39;re going to add is our</text><text start=\"1417.08\" dur=\"6\">subf which is our web scraper so click</text><text start=\"1421.32\" dur=\"4.08\">on tool see there&amp;#39;s a bunch of tools if</text><text start=\"1423.08\" dur=\"5.56\">we do the first one call any1 workflow</text><text start=\"1425.4\" dur=\"5.519\">to this will call another workflow so</text><text start=\"1428.64\" dur=\"5.72\">we&amp;#39;re going to create this new workflow</text><text start=\"1430.919\" dur=\"6\">now the name we&amp;#39;re going to give it is</text><text start=\"1434.36\" dur=\"3.72\">web scraper to Vector DB CU that&amp;#39;s what</text><text start=\"1436.919\" dur=\"3.481\">it&amp;#39;s going to do it&amp;#39;s going to scrape a</text><text start=\"1438.08\" dur=\"5.4\">website it&amp;#39;s going to get that info turn</text><text start=\"1440.4\" dur=\"5.12\">into Vector database and then as for the</text><text start=\"1443.48\" dur=\"3.439\">description we&amp;#39;re going to put this in</text><text start=\"1445.52\" dur=\"4.759\">here which is called us tool to get info</text><text start=\"1446.919\" dur=\"5.88\">from a website IE scrape given a</text><text start=\"1450.279\" dur=\"4.201\">specified URL this info is then pushed</text><text start=\"1452.799\" dur=\"3.76\">into a vector database so you need to</text><text start=\"1454.48\" dur=\"4.6\">call the vector DB again after running</text><text start=\"1456.559\" dur=\"5.24\">this now the name of description these</text><text start=\"1459.08\" dur=\"5.36\">are detailed so that the AI agent can</text><text start=\"1461.799\" dur=\"5.161\">use this to and understand it because</text><text start=\"1464.44\" dur=\"5.119\">it&amp;#39;s a large language model so it has to</text><text start=\"1466.96\" dur=\"5.319\">understand the language you give it</text><text start=\"1469.559\" dur=\"5.881\">right and now the</text><text start=\"1472.279\" dur=\"5.921\">workflow from list for here I have a</text><text start=\"1475.44\" dur=\"5.719\">bunch but you won have any probably so</text><text start=\"1478.2\" dur=\"4.479\">create a new sub workflow click there</text><text start=\"1481.159\" dur=\"3.801\">now this is where we&amp;#39;re going to create</text><text start=\"1482.679\" dur=\"4.6\">our web scraping</text><text start=\"1484.96\" dur=\"4.4\">workflow so we have the first one which</text><text start=\"1487.279\" dur=\"5.081\">is we executed by another workflow so</text><text start=\"1489.36\" dur=\"6.28\">that&amp;#39;s the trigger it&amp;#39;s triggered by our</text><text start=\"1492.36\" dur=\"5.08\">AI agent and after this we want to</text><text start=\"1495.64\" dur=\"4.279\">replace this with our logic so let&amp;#39;s</text><text start=\"1497.44\" dur=\"4.959\">delete that</text><text start=\"1499.919\" dur=\"5.76\">and then we&amp;#39;ll click on the plus and</text><text start=\"1502.399\" dur=\"6.241\">from here we want to write an execute</text><text start=\"1505.679\" dur=\"4.561\">because we want to execute a command so</text><text start=\"1508.64\" dur=\"4.279\">what&amp;#39;s going on here why are we going to</text><text start=\"1510.24\" dur=\"5.76\">do this so let me show you so I watched</text><text start=\"1512.919\" dur=\"4.801\">the previous video I think it was co co</text><text start=\"1516\" dur=\"3.72\">Med something like that it does a bunch</text><text start=\"1517.72\" dur=\"4.48\">of AI videos but he was showing you how</text><text start=\"1519.72\" dur=\"4.319\">to do this on na10 using Docker I</text><text start=\"1522.2\" dur=\"4.64\">thought it seemed a bit complicated</text><text start=\"1524.039\" dur=\"5.64\">couldn&amp;#39;t we still just use Python and I</text><text start=\"1526.84\" dur=\"6.64\">found out that we can</text><text start=\"1529.679\" dur=\"5.36\">so because we&amp;#39;re running this locally on</text><text start=\"1533.48\" dur=\"6.12\">our own</text><text start=\"1535.039\" dur=\"7.281\">machine we can actually use our own</text><text start=\"1539.6\" dur=\"5.199\">machines resources so for example if we</text><text start=\"1542.32\" dur=\"5.719\">run this execute command this will run</text><text start=\"1544.799\" dur=\"6.36\">commands as if you were on Terminal on</text><text start=\"1548.039\" dur=\"5.721\">the computer so for example here if we</text><text start=\"1551.159\" dur=\"6.481\">were on Terminal like</text><text start=\"1553.76\" dur=\"6.08\">this so for example if we do Echo hello</text><text start=\"1557.64\" dur=\"5.039\">Echo just means write it back to me with</text><text start=\"1559.84\" dur=\"4.719\">Echo hello and it write it back hello we</text><text start=\"1562.679\" dur=\"4.6\">can also run python whatever from a</text><text start=\"1564.559\" dur=\"6.081\">terminal I can do the exact same thing</text><text start=\"1567.279\" dur=\"6.28\">here so the execute command node what it</text><text start=\"1570.64\" dur=\"5.32\">does is it executes commands as if it</text><text start=\"1573.559\" dur=\"5.441\">was your terminal because this Here</text><text start=\"1575.96\" dur=\"5.88\">Local Host 5678 is actually running on</text><text start=\"1579\" dur=\"5.96\">my computer it has access to the</text><text start=\"1581.84\" dur=\"5\">resources that any program would have on</text><text start=\"1584.96\" dur=\"3.8\">my computer so for example it can access</text><text start=\"1586.84\" dur=\"4.52\">my python right whereas if you&amp;#39;re</text><text start=\"1588.76\" dur=\"5.159\">running this on n10 doio the cloud</text><text start=\"1591.36\" dur=\"4.48\">platform then you have to install python</text><text start=\"1593.919\" dur=\"4.561\">using this execute command if you want</text><text start=\"1595.84\" dur=\"4.28\">to figure out how to do that then ask</text><text start=\"1598.48\" dur=\"4.799\">chat GPT and it will give you something</text><text start=\"1600.12\" dur=\"4.799\">that might work but essentially</text><text start=\"1603.279\" dur=\"4.88\">terminals like this here if we clear</text><text start=\"1604.919\" dur=\"5.401\">that and if I write like Echo hello</text><text start=\"1608.159\" dur=\"5.64\">world and then it will send that back</text><text start=\"1610.32\" dur=\"5.92\">out and if I do something like pyth 3--</text><text start=\"1613.799\" dur=\"4.201\">version you can see that python has been</text><text start=\"1616.24\" dur=\"3.28\">installed if you don&amp;#39;t have python</text><text start=\"1618\" dur=\"4.24\">installed</text><text start=\"1619.52\" dur=\"5.72\">install Homebrew if you&amp;#39;re on Linux or</text><text start=\"1622.24\" dur=\"5.439\">Mac or install chocolate if you&amp;#39;re on</text><text start=\"1625.24\" dur=\"6.039\">Windows and then use that to install</text><text start=\"1627.679\" dur=\"5.761\">python have a quick Google aspd easy</text><text start=\"1631.279\" dur=\"3.801\">enough so from here I&amp;#39;ll be able to</text><text start=\"1633.44\" dur=\"4.959\">access that python so let paste this</text><text start=\"1635.08\" dur=\"5.36\">code in scroll it down so this is like</text><text start=\"1638.399\" dur=\"3.801\">using my terminal so I have Python 3</text><text start=\"1640.44\" dur=\"3.76\">version just to make sure that it does</text><text start=\"1642.2\" dur=\"3.88\">have access and then we&amp;#39;re going to</text><text start=\"1644.2\" dur=\"4.16\">create a virtual environment we&amp;#39;re going</text><text start=\"1646.08\" dur=\"5.16\">to go into that virtual environment and</text><text start=\"1648.36\" dur=\"4.16\">we&amp;#39;re going to install craw for AI so</text><text start=\"1651.24\" dur=\"2.84\">the reason we&amp;#39;re doing this here is so</text><text start=\"1652.52\" dur=\"3.44\">that it doesn&amp;#39;t install craw for AI in</text><text start=\"1654.08\" dur=\"5.599\">my entire system I only want it to</text><text start=\"1655.96\" dur=\"6.719\">contain it within here then after that</text><text start=\"1659.679\" dur=\"5.441\">we want to pep install our CW for AI pep</text><text start=\"1662.679\" dur=\"5.161\">being python package</text><text start=\"1665.12\" dur=\"5.6\">manager basically installs modules and</text><text start=\"1667.84\" dur=\"5.24\">libraries and packages like craw for AI</text><text start=\"1670.72\" dur=\"6.16\">and then we do craw for AI setup which</text><text start=\"1673.08\" dur=\"5.92\">if we go here is um the way that we set</text><text start=\"1676.88\" dur=\"4.72\">it up post installation so this is our</text><text start=\"1679\" dur=\"6.039\">quick start instructions is PIP install</text><text start=\"1681.6\" dur=\"6.64\">CW for AI and then run it so go back</text><text start=\"1685.039\" dur=\"4.88\">here then we run it and then after that</text><text start=\"1688.24\" dur=\"4.6\">the way you would do it if you were</text><text start=\"1689.919\" dur=\"5.48\">writing the actual python file is you</text><text start=\"1692.84\" dur=\"5.24\">would write it like this here and you&amp;#39;d</text><text start=\"1695.399\" dur=\"5.561\">pass in the URL and then that would be</text><text start=\"1698.08\" dur=\"5.76\">you you just run this this script so we</text><text start=\"1700.96\" dur=\"5.68\">can actually create this script like</text><text start=\"1703.84\" dur=\"4.319\">create this file from your command line</text><text start=\"1706.64\" dur=\"3.879\">so from terminal and the way you would</text><text start=\"1708.159\" dur=\"5.24\">do it is Echo and then you have it in</text><text start=\"1710.519\" dur=\"6.241\">here like this and then you have this</text><text start=\"1713.399\" dur=\"6.76\">like output Arrow into a file called</text><text start=\"1716.76\" dur=\"7.48\">crawler py and then we can run that file</text><text start=\"1720.159\" dur=\"7.52\">like this Python 3 crawler py and that</text><text start=\"1724.24\" dur=\"6.039\">will run that file which is cool because</text><text start=\"1727.679\" dur=\"4.84\">now what we can do is create files from</text><text start=\"1730.279\" dur=\"4.361\">this execute command and then execute</text><text start=\"1732.519\" dur=\"4.64\">them so this here creates a virtual</text><text start=\"1734.64\" dur=\"4.879\">environment creates your um file for</text><text start=\"1737.159\" dur=\"4.041\">your crawler and then runs it and in the</text><text start=\"1739.519\" dur=\"4.441\">middle here we can see that I Echo this</text><text start=\"1741.2\" dur=\"6.04\">crawler for AI and then my name look</text><text start=\"1743.96\" dur=\"5.52\">jurn Das splitter the reason is because</text><text start=\"1747.24\" dur=\"6.919\">I&amp;#39;m going to use that so I can split out</text><text start=\"1749.48\" dur=\"8.96\">the output in terminal from this first</text><text start=\"1754.159\" dur=\"6.841\">chunk here to this part here why well</text><text start=\"1758.44\" dur=\"5.839\">because when I run python 3-- version</text><text start=\"1761\" dur=\"6.039\">for example here you see it gives this</text><text start=\"1764.279\" dur=\"6.161\">output well the output of execute</text><text start=\"1767.039\" dur=\"5.281\">command is your terminal output so it</text><text start=\"1770.44\" dur=\"5.16\">will have python</text><text start=\"1772.32\" dur=\"4.839\">3132 and then when I do this here and</text><text start=\"1775.6\" dur=\"3.439\">that and then the PIP install it will</text><text start=\"1777.159\" dur=\"3.76\">have all of this output on the command</text><text start=\"1779.039\" dur=\"4.64\">line which I don&amp;#39;t want I only want the</text><text start=\"1780.919\" dur=\"4.321\">output from here so we use that to split</text><text start=\"1783.679\" dur=\"6.321\">it which will show you when we actually</text><text start=\"1785.24\" dur=\"7.2\">run this so we now have scraped the web</text><text start=\"1790\" dur=\"4.24\">page simple as that the next thing we</text><text start=\"1792.44\" dur=\"4.359\">want to do is we want to get that script</text><text start=\"1794.24\" dur=\"5.72\">portion from terminal so if we click</text><text start=\"1796.799\" dur=\"4.521\">plus we then then write function and</text><text start=\"1799.96\" dur=\"3.88\">we&amp;#39;re going to get this code here so</text><text start=\"1801.32\" dur=\"5.04\">we&amp;#39;re going to run custom python code</text><text start=\"1803.84\" dur=\"4.439\">click in here or</text><text start=\"1806.36\" dur=\"3.76\">JavaScript I&amp;#39;m just going to paste this</text><text start=\"1808.279\" dur=\"5.24\">in</text><text start=\"1810.12\" dur=\"4.84\">here and what this does is it gets the</text><text start=\"1813.519\" dur=\"4.841\">output</text><text start=\"1814.96\" dur=\"5.48\">from our scraper and it creates a</text><text start=\"1818.36\" dur=\"4.12\">variable called output and then we</text><text start=\"1820.44\" dur=\"3.479\">create a variable called match and we</text><text start=\"1822.48\" dur=\"4.4\">match it to what I had just shown you</text><text start=\"1823.919\" dur=\"5.321\">that craw for AI J splitter and it&amp;#39;s</text><text start=\"1826.88\" dur=\"4.6\">basically what that does ISL it splits</text><text start=\"1829.24\" dur=\"4.64\">the whole chunk of text that we get into</text><text start=\"1831.48\" dur=\"4.96\">two parts the part before craw for look</text><text start=\"1833.88\" dur=\"4.36\">Jon splitter and the part after and we</text><text start=\"1836.44\" dur=\"4.119\">only want the part after which is what</text><text start=\"1838.24\" dur=\"4.48\">we do here return match and it&amp;#39;s that</text><text start=\"1840.559\" dur=\"6.201\">match and square brackets as one because</text><text start=\"1842.72\" dur=\"6.92\">match will then be an array of size two</text><text start=\"1846.76\" dur=\"5\">an array indexes start at zero so you</text><text start=\"1849.64\" dur=\"3.96\">have zero match zero would be everything</text><text start=\"1851.76\" dur=\"2.96\">before this match one would be</text><text start=\"1853.6\" dur=\"4.559\">everything</text><text start=\"1854.72\" dur=\"5.919\">after or if we don&amp;#39;t have anything there</text><text start=\"1858.159\" dur=\"4.201\">then no relevant data found so before</text><text start=\"1860.639\" dur=\"4\">we&amp;#39;re able to test this we have to give</text><text start=\"1862.36\" dur=\"4.76\">it an input schema because you can see</text><text start=\"1864.639\" dur=\"4.841\">there&amp;#39;s an error here because it can&amp;#39;t</text><text start=\"1867.12\" dur=\"5.399\">be executed and that&amp;#39;s because we don&amp;#39;t</text><text start=\"1869.48\" dur=\"4.72\">know or the AI agent doesn&amp;#39;t know what</text><text start=\"1872.519\" dur=\"4.64\">information am I supposed to give this</text><text start=\"1874.2\" dur=\"6.359\">here so the input data mode we&amp;#39;re going</text><text start=\"1877.159\" dur=\"5.681\">to use Json it&amp;#39;s the easiest way for us</text><text start=\"1880.559\" dur=\"5.08\">to move stuff around and and work with</text><text start=\"1882.84\" dur=\"5.4\">the data and what we want to pass in</text><text start=\"1885.639\" dur=\"6\">here is</text><text start=\"1888.24\" dur=\"5.919\">this HTTP request URL so the example</text><text start=\"1891.639\" dur=\"5\">that we&amp;#39;re telling the agent is we want</text><text start=\"1894.159\" dur=\"7.161\">you to give an HTTP request URL and</text><text start=\"1896.639\" dur=\"8.361\">here&amp;#39;s an example htps google.com right</text><text start=\"1901.32\" dur=\"5.719\">and now whenever the AI agent runs this</text><text start=\"1905\" dur=\"4.72\">it will try and guess what this should</text><text start=\"1907.039\" dur=\"4.88\">be it&amp;#39;ll make an educated guess so if we</text><text start=\"1909.72\" dur=\"4.36\">go to execute command if I open this</text><text start=\"1911.919\" dur=\"5.521\">right up see</text><text start=\"1914.08\" dur=\"6.479\">here actually within the URL I have this</text><text start=\"1917.44\" dur=\"5.199\">here and that dynamically gets that</text><text start=\"1920.559\" dur=\"5.12\">value that I just shown you but for the</text><text start=\"1922.639\" dur=\"6.64\">time being if we just paste in this</text><text start=\"1925.679\" dur=\"6.201\">Google.com so let me CR A and contrl C</text><text start=\"1929.279\" dur=\"5.481\">and then go forward now what we can do</text><text start=\"1931.88\" dur=\"4.44\">is we can test this just with google.com</text><text start=\"1934.76\" dur=\"4.519\">and if we test this</text><text start=\"1936.32\" dur=\"5.319\">workflow and open this up we can see</text><text start=\"1939.279\" dur=\"4.64\">that HP request is no that&amp;#39;s CU you</text><text start=\"1941.639\" dur=\"4.961\">don&amp;#39;t pass any value but we&amp;#39;ve defined</text><text start=\"1943.919\" dur=\"6.081\">it as Google you can see now it&amp;#39;s popped</text><text start=\"1946.6\" dur=\"6.12\">some stuff out here it popped out well</text><text start=\"1950\" dur=\"4.72\">standard out you can see in this is the</text><text start=\"1952.72\" dur=\"4.72\">reason we have the splitter is it first</text><text start=\"1954.72\" dur=\"4.76\">it&amp;#39;s like py 313 that&amp;#39;s we&amp;#39;ve got then</text><text start=\"1957.44\" dur=\"5.28\">requirement already satisfied blah blah</text><text start=\"1959.48\" dur=\"5.559\">blah these are all because we&amp;#39;re trying</text><text start=\"1962.72\" dur=\"5\">to install and set this up so we don&amp;#39;t</text><text start=\"1965.039\" dur=\"4.88\">want any of that information but if we</text><text start=\"1967.72\" dur=\"5\">keep scrolling</text><text start=\"1969.919\" dur=\"4.681\">down we can see we get to a point here</text><text start=\"1972.72\" dur=\"5.64\">with the square brackets where it starts</text><text start=\"1974.6\" dur=\"6.28\">to run crawl for AI so just before here</text><text start=\"1978.36\" dur=\"5.319\">we have our Echo craw blah blah blah you</text><text start=\"1980.88\" dur=\"5.519\">can see that exists right there so then</text><text start=\"1983.679\" dur=\"6.041\">everything after there is actually craw</text><text start=\"1986.399\" dur=\"6.721\">for AI getting information from Google</text><text start=\"1989.72\" dur=\"5.72\">so you can see fetching google.com</text><text start=\"1993.12\" dur=\"4.64\">processing it scraping it complete and</text><text start=\"1995.44\" dur=\"6.56\">then everything then from</text><text start=\"1997.76\" dur=\"5.799\">here this is all from the google.com</text><text start=\"2002\" dur=\"4.76\">initial web</text><text start=\"2003.559\" dur=\"7.041\">page so if we go into our code we can</text><text start=\"2006.76\" dur=\"6.2\">see that the output here gets everything</text><text start=\"2010.6\" dur=\"5.64\">after this</text><text start=\"2012.96\" dur=\"6.719\">here um we&amp;#39;ll just leave that but this</text><text start=\"2016.24\" dur=\"4.84\">all is removed this big chunk at the</text><text start=\"2019.679\" dur=\"3.36\">beginning this python blah blah blah is</text><text start=\"2021.08\" dur=\"5.24\">all removed and now we only have the web</text><text start=\"2023.039\" dur=\"5.24\">page so perfect it has cwed successfully</text><text start=\"2026.32\" dur=\"6.56\">and we&amp;#39;ve gotten all the stuff</text><text start=\"2028.279\" dur=\"7.12\">here so let me redo this</text><text start=\"2032.88\" dur=\"4.279\">dynamically so just going to paste it</text><text start=\"2035.399\" dur=\"3.481\">back in and you can see that it doesn&amp;#39;t</text><text start=\"2037.159\" dur=\"3.64\">look highly or anything and that&amp;#39;s</text><text start=\"2038.88\" dur=\"4.399\">because if you see up here we&amp;#39;re in</text><text start=\"2040.799\" dur=\"4.321\">fixed we want to go to expression cuz</text><text start=\"2043.279\" dur=\"4.041\">then it&amp;#39;s Dynamic it&amp;#39;s a function if we</text><text start=\"2045.12\" dur=\"3.08\">paste that in scroll up you can see it&amp;#39;s</text><text start=\"2047.32\" dur=\"3.92\">now</text><text start=\"2048.2\" dur=\"4.679\">green and the reason it&amp;#39;s json. HTTP</text><text start=\"2051.24\" dur=\"3.56\">request URL is because that&amp;#39;s what it&amp;#39;s</text><text start=\"2052.879\" dur=\"4.321\">called here so basically to get this if</text><text start=\"2054.8\" dur=\"4.76\">you&amp;#39;re making things like that or you</text><text start=\"2057.2\" dur=\"5.08\">just go over and drag and drop it and</text><text start=\"2059.56\" dur=\"5.92\">boom simple as that so that will now</text><text start=\"2062.28\" dur=\"6.359\">work dynamically so once you then have</text><text start=\"2065.48\" dur=\"6.48\">this web page scraped as I was saying in</text><text start=\"2068.639\" dur=\"6.2\">the excal draw example bring this</text><text start=\"2071.96\" dur=\"6.439\">over that we don&amp;#39;t want to pass this</text><text start=\"2074.839\" dur=\"6\">entire page in we want to chunk it up so</text><text start=\"2078.399\" dur=\"5.801\">that we can only or we only have to go</text><text start=\"2080.839\" dur=\"5.921\">and get the one two three whatever</text><text start=\"2084.2\" dur=\"5.6\">pieces of the page that we require not</text><text start=\"2086.76\" dur=\"5.919\">the entire page so how do we do that</text><text start=\"2089.8\" dur=\"4.92\">well we&amp;#39;re using a vector database</text><text start=\"2092.679\" dur=\"6.241\">specifically click plus we&amp;#39;re going to</text><text start=\"2094.72\" dur=\"6.72\">use a vector DB code super base Vector</text><text start=\"2098.92\" dur=\"5.04\">store if we go on there then we&amp;#39;ll click</text><text start=\"2101.44\" dur=\"4.32\">on ADD documents to Vector store</text><text start=\"2103.96\" dur=\"4.36\">credential to connect it I already have</text><text start=\"2105.76\" dur=\"6.68\">one but let&amp;#39;s show you how to do that so</text><text start=\"2108.32\" dur=\"7.279\">if we go on Google super base Vector</text><text start=\"2112.44\" dur=\"6.44\">AB um you don&amp;#39;t have Tob one just super</text><text start=\"2115.599\" dur=\"5.881\">base open up anyone and then sign in or</text><text start=\"2118.88\" dur=\"7.12\">sign up once you&amp;#39;ve signed in SL signed</text><text start=\"2121.48\" dur=\"8.52\">up go to your uh dashboard and then</text><text start=\"2126\" dur=\"6.64\">access tokens and from here if we</text><text start=\"2130\" dur=\"5.079\">generate a new token give it a</text><text start=\"2132.64\" dur=\"6.52\">name in</text><text start=\"2135.079\" dur=\"6.561\">local two I think I called it generate</text><text start=\"2139.16\" dur=\"5.12\">token and there we go so successfully</text><text start=\"2141.64\" dur=\"6.64\">generated a new token so we copy this</text><text start=\"2144.28\" dur=\"7.559\">token and we go back here</text><text start=\"2148.28\" dur=\"5.2\">oops click on new</text><text start=\"2151.839\" dur=\"5.201\">credential</text><text start=\"2153.48\" dur=\"6.8\">ah thought that actually interesting</text><text start=\"2157.04\" dur=\"3.24\">right so once you&amp;#39;re</text><text start=\"2165\" dur=\"5.52\">on so log in or sign up and then from</text><text start=\"2168.72\" dur=\"4.359\">here if we go to</text><text start=\"2170.52\" dur=\"5\">dashboard and then from dashboard let&amp;#39;s</text><text start=\"2173.079\" dur=\"4.321\">create a new project choose an</text><text start=\"2175.52\" dur=\"4.559\">organization you have to create a new</text><text start=\"2177.4\" dur=\"6.04\">organization probably for me it&amp;#39;s just</text><text start=\"2180.079\" dur=\"5.441\">my name we&amp;#39;ll give it a project name so</text><text start=\"2183.44\" dur=\"6.12\">call this um n</text><text start=\"2185.52\" dur=\"4.04\">n interlet agent</text><text start=\"2191.2\" dur=\"4.76\">database password let&amp;#39;s just give it</text><text start=\"2193.3\" dur=\"6.779\">[Music]</text><text start=\"2195.96\" dur=\"6.6\">something me try again actually CU I&amp;#39;m M</text><text start=\"2200.079\" dur=\"5.441\">tight there we go region closest to you</text><text start=\"2202.56\" dur=\"5.24\">I&amp;#39;ll go UK now let&amp;#39;s create this new</text><text start=\"2205.52\" dur=\"5.36\">project and this will create the project</text><text start=\"2207.8\" dur=\"3.08\">where we&amp;#39;re going to have our Vector</text><text start=\"2211.76\" dur=\"5.44\">DB so now that we have this here the way</text><text start=\"2215.4\" dur=\"4.679\">that we&amp;#39;re going to access this project</text><text start=\"2217.2\" dur=\"5.48\">is the project API Keys</text><text start=\"2220.079\" dur=\"4.441\">specifically if we go here I&amp;#39;ve already</text><text start=\"2222.68\" dur=\"4.56\">clicked into it but if you are on your</text><text start=\"2224.52\" dur=\"5.839\">super vas Vector store credential</text><text start=\"2227.24\" dur=\"5.76\">connect with create new credential it</text><text start=\"2230.359\" dur=\"5.72\">asks for your host so your your project</text><text start=\"2233\" dur=\"5.68\">basically and then your service R secret</text><text start=\"2236.079\" dur=\"4.441\">so if we go back here we can see that we</text><text start=\"2238.68\" dur=\"3.96\">have the service Ro now the reason we</text><text start=\"2240.52\" dur=\"5.079\">use this is because it says this key has</text><text start=\"2242.64\" dur=\"5.12\">the ability to bypass roow level</text><text start=\"2245.599\" dur=\"4.321\">security now what does that mean well</text><text start=\"2247.76\" dur=\"5\">it&amp;#39;s that not only is your table secure</text><text start=\"2249.92\" dur=\"5.8\">but every row is securing your</text><text start=\"2252.76\" dur=\"5.559\">table whoops what&amp;#39;s happened here</text><text start=\"2255.72\" dur=\"5.72\">essentially that bypasses all of your Ro</text><text start=\"2258.319\" dur=\"7.28\">level um security so if we go to Project</text><text start=\"2261.44\" dur=\"7.52\">settings and then from here we scroll</text><text start=\"2265.599\" dur=\"6.441\">data API on the left and then from here</text><text start=\"2268.96\" dur=\"6.119\">we have our service R so we can review</text><text start=\"2272.04\" dur=\"5.24\">that and then copy shut your eyes don&amp;#39;t</text><text start=\"2275.079\" dur=\"4.801\">share it with anyone as always paste</text><text start=\"2277.28\" dur=\"5.88\">that in here let&amp;#39;s go back here and the</text><text start=\"2279.88\" dur=\"6.16\">project URL let&amp;#39;s copy that URL we&amp;#39;ll</text><text start=\"2283.16\" dur=\"4.919\">bring that back here paste that in and</text><text start=\"2286.04\" dur=\"4.92\">save and there we go so we&amp;#39;re now</text><text start=\"2288.079\" dur=\"5.481\">connected to super base operation mode</text><text start=\"2290.96\" dur=\"6.32\">insert that&amp;#39;s what we want to do insert</text><text start=\"2293.56\" dur=\"5.2\">and then table name so from list we&amp;#39;ll</text><text start=\"2297.28\" dur=\"3.88\">go and find the tables you currently</text><text start=\"2298.76\" dur=\"4.559\">have we don&amp;#39;t have any so if we go back</text><text start=\"2301.16\" dur=\"5.36\">to super</text><text start=\"2303.319\" dur=\"7.481\">base home you would think there&amp;#39;d be a</text><text start=\"2306.52\" dur=\"8.2\">button to just create a nice table there</text><text start=\"2310.8\" dur=\"4.96\">is not however however on here if we go</text><text start=\"2314.72\" dur=\"3.92\">to</text><text start=\"2315.76\" dur=\"5.599\">docs on these docs superbase Vector</text><text start=\"2318.64\" dur=\"4.84\">stall mode you can see that superbase</text><text start=\"2321.359\" dur=\"5\">provides a quick start for setting up</text><text start=\"2323.48\" dur=\"5.56\">your vector store so if we click on that</text><text start=\"2326.359\" dur=\"4.48\">there we can see that we have</text><text start=\"2329.04\" dur=\"4.039\">initializing your database so prepare</text><text start=\"2330.839\" dur=\"3.881\">your database with relevant tables</text><text start=\"2333.079\" dur=\"5.201\">because it&amp;#39;s a vector DB requires</text><text start=\"2334.72\" dur=\"6.399\">specific tables and this SE cool</text><text start=\"2338.28\" dur=\"6.48\">query creates them for you so if we copy</text><text start=\"2341.119\" dur=\"5.641\">that from here and we go to back to</text><text start=\"2344.76\" dur=\"5.4\">super base and on the left if we pop</text><text start=\"2346.76\" dur=\"6.96\">that open we can go to SQL</text><text start=\"2350.16\" dur=\"6.56\">editor which will pop open here we paste</text><text start=\"2353.72\" dur=\"5.16\">that in and then run that will run</text><text start=\"2356.72\" dur=\"4.359\">success node row is returned because the</text><text start=\"2358.88\" dur=\"9.08\">query actually creates things it doesn&amp;#39;t</text><text start=\"2361.079\" dur=\"9.561\">query stuff so now if we go back here</text><text start=\"2367.96\" dur=\"6.1\">and I&amp;#39;ll click something and click back</text><text start=\"2370.64\" dur=\"4.56\">in see if it pops up you</text><text start=\"2374.06\" dur=\"3.98\">[Music]</text><text start=\"2375.2\" dur=\"3.8\">see get it to refresh how am I going to</text><text start=\"2378.04\" dur=\"4.319\">do</text><text start=\"2379\" dur=\"5.4\">that there we go right so now we&amp;#39;re back</text><text start=\"2382.359\" dur=\"4.041\">on it we have documents our match</text><text start=\"2384.4\" dur=\"3.4\">documents this time we&amp;#39;re going to click</text><text start=\"2386.4\" dur=\"2.84\">documents because we&amp;#39;re going to be</text><text start=\"2387.8\" dur=\"3.96\">pushing them and we don&amp;#39;t want the match</text><text start=\"2389.24\" dur=\"6.44\">we want the actual documents so from</text><text start=\"2391.76\" dur=\"6.359\">list documents insert perfect now for</text><text start=\"2395.68\" dur=\"4.36\">our Vector database if you&amp;#39;re aware</text><text start=\"2398.119\" dur=\"3.72\">which you may be if you&amp;#39;ve used rag</text><text start=\"2400.04\" dur=\"7.6\">before you may not be but essentially</text><text start=\"2401.839\" dur=\"7.921\">the steps are number one tokenize IE</text><text start=\"2407.64\" dur=\"6.64\">split so</text><text start=\"2409.76\" dur=\"7.359\">tokenize then step number two is</text><text start=\"2414.28\" dur=\"5.2\">embed and then set number three is to</text><text start=\"2417.119\" dur=\"5.72\">then inser or</text><text start=\"2419.48\" dur=\"5.16\">upset so let&amp;#39;s just write insert so</text><text start=\"2422.839\" dur=\"3.48\">basically we have text we want to break</text><text start=\"2424.64\" dur=\"4.28\">that text up we turn that text set</text><text start=\"2426.319\" dur=\"5.361\">numbers and we put it in the vector</text><text start=\"2428.92\" dur=\"5.679\">database so what we&amp;#39;re going to do is if</text><text start=\"2431.68\" dur=\"5.8\">we go back here click</text><text start=\"2434.599\" dur=\"3.961\">out you can see we have embedding and</text><text start=\"2437.48\" dur=\"2.639\">document you can&amp;#39;t really see the about</text><text start=\"2438.56\" dur=\"3.96\">it says embedding but we have embeddings</text><text start=\"2440.119\" dur=\"4.681\">and documents so for the document let&amp;#39;s</text><text start=\"2442.52\" dur=\"4.92\">click on that first we&amp;#39;re going to use</text><text start=\"2444.8\" dur=\"5.279\">the default data</text><text start=\"2447.44\" dur=\"4.84\">loader and for here we want to specify</text><text start=\"2450.079\" dur=\"4.481\">what is the type of data that we have</text><text start=\"2452.28\" dur=\"3.92\">and is going to be Json we can see here</text><text start=\"2454.56\" dur=\"4.279\">it&amp;#39;s in Json and we&amp;#39;re just going to</text><text start=\"2456.2\" dur=\"3.84\">load all of that data</text><text start=\"2458.839\" dur=\"3\">but if we click out here we can see</text><text start=\"2460.04\" dur=\"4.92\">there&amp;#39;s a new mandatory one which is</text><text start=\"2461.839\" dur=\"5.721\">text splitter I.E how are you going to</text><text start=\"2464.96\" dur=\"5.2\">chunk it up and for us we&amp;#39;re just going</text><text start=\"2467.56\" dur=\"5.84\">to use the recursive character text</text><text start=\"2470.16\" dur=\"6\">spitter with a chunk size of a th000 and</text><text start=\"2473.4\" dur=\"5.52\">no overlap that&amp;#39;s fine and so now we</text><text start=\"2476.16\" dur=\"4.32\">have our chunks of a thousand broken up</text><text start=\"2478.92\" dur=\"4.52\">so the next piece we need to do is the</text><text start=\"2480.48\" dur=\"4.56\">embedding so if click on plus get</text><text start=\"2483.44\" dur=\"3.36\">embeddings and we&amp;#39;re going to use</text><text start=\"2485.04\" dur=\"4.76\">hugging face inference you could use</text><text start=\"2486.8\" dur=\"4.88\">opening I I suppose which would be fine</text><text start=\"2489.8\" dur=\"3.92\">cuz I think if we click on it we&amp;#39;re</text><text start=\"2491.68\" dur=\"5.439\">already connected if you want to do it</text><text start=\"2493.72\" dur=\"5.84\">free you can use hugging face wh which</text><text start=\"2497.119\" dur=\"5.161\">I&amp;#39;ll show you how to do so if you plus</text><text start=\"2499.56\" dur=\"3.72\">here embeddings hugging face you see</text><text start=\"2502.28\" dur=\"5.48\">that I&amp;#39;m</text><text start=\"2503.28\" dur=\"7.24\">connected to connect if we go to hugging</text><text start=\"2507.76\" dur=\"5.44\">face and you create an account in here</text><text start=\"2510.52\" dur=\"4.12\">so I have a profile here it&amp;#39;s just me</text><text start=\"2513.2\" dur=\"4.56\">why love love</text><text start=\"2514.64\" dur=\"5.88\">heart I like the space well there you go</text><text start=\"2517.76\" dur=\"6.16\">so um hugging face you can get free</text><text start=\"2520.52\" dur=\"5.319\">models API embeddings Etc and what we&amp;#39;re</text><text start=\"2523.92\" dur=\"4.36\">going to want to do is create an API key</text><text start=\"2525.839\" dur=\"6.401\">so click on you and then click go to</text><text start=\"2528.28\" dur=\"5.559\">access tokens confirm your identity with</text><text start=\"2532.24\" dur=\"3.879\">your</text><text start=\"2533.839\" dur=\"5.081\">password there we go we&amp;#39;re in and from</text><text start=\"2536.119\" dur=\"4.24\">here we want to create a new token which</text><text start=\"2538.92\" dur=\"5.32\">just your API key we&amp;#39;ll give it a name</text><text start=\"2540.359\" dur=\"6\">so we&amp;#39;ll call any in until the agent and</text><text start=\"2544.24\" dur=\"3.879\">then from here all you&amp;#39;re worried about</text><text start=\"2546.359\" dur=\"4.521\">is a inference and you want to just make</text><text start=\"2548.119\" dur=\"5.561\">calls to inference providers IE to</text><text start=\"2550.88\" dur=\"3.64\">models and then go down and we want to</text><text start=\"2553.68\" dur=\"3.76\">create</text><text start=\"2554.52\" dur=\"4.28\">token and that&amp;#39;s it then you copy this</text><text start=\"2557.44\" dur=\"3.04\">again don&amp;#39;t share it with anyone I&amp;#39;ll</text><text start=\"2558.8\" dur=\"4.36\">have deleted all of these by the time</text><text start=\"2560.48\" dur=\"5.96\">you you come do this create new</text><text start=\"2563.16\" dur=\"6.84\">credential paste it in here click save</text><text start=\"2566.44\" dur=\"5.24\">test it successful and boom and then for</text><text start=\"2570\" dur=\"4.24\">the model we&amp;#39;re going to use this here</text><text start=\"2571.68\" dur=\"4.96\">so um oh sorry not that one we&amp;#39;re going</text><text start=\"2574.24\" dur=\"6.319\">to use a better one so if we search up</text><text start=\"2576.64\" dur=\"6.959\">top we huging face embedding</text><text start=\"2580.559\" dur=\"4.641\">models so click on the first one models</text><text start=\"2583.599\" dur=\"3.361\">you can see there&amp;#39;s a bunch of models</text><text start=\"2585.2\" dur=\"3.52\">here you can see they&amp;#39;re all embeddings</text><text start=\"2586.96\" dur=\"4.56\">modeles but the one that we&amp;#39;re going to</text><text start=\"2588.72\" dur=\"3.96\">use is I&amp;#39;ll just paste it in because I</text><text start=\"2591.52\" dur=\"3.48\">have it on the other</text><text start=\"2592.68\" dur=\"5.639\">screen but this one</text><text start=\"2595\" dur=\"7.68\">here and that&amp;#39;s just a essentially a</text><text start=\"2598.319\" dur=\"8.8\">random one I found online um which has</text><text start=\"2602.68\" dur=\"5.919\">the same number of Dimensions as the uh</text><text start=\"2607.119\" dur=\"4.921\">line chain thing here because you can</text><text start=\"2608.599\" dur=\"5.52\">see here that the um embedding Vector is</text><text start=\"2612.04\" dur=\"4.72\">1536 which works for opening eye</text><text start=\"2614.119\" dur=\"5.2\">embeddings Dimensions is the number of</text><text start=\"2616.76\" dur=\"6.04\">dimensions in your vector database for</text><text start=\"2619.319\" dur=\"7.121\">example this here with an x a y and a</text><text start=\"2622.8\" dur=\"5.88\">zed that would be three dimensions so</text><text start=\"2626.44\" dur=\"3.919\">imagine one with</text><text start=\"2628.68\" dur=\"4.28\">1,536</text><text start=\"2630.359\" dur=\"5.121\">Dimensions but anyway so this works with</text><text start=\"2632.96\" dur=\"4.44\">that so we&amp;#39;re going to use that and</text><text start=\"2635.48\" dur=\"4.68\">that&amp;#39;s all we have to do and that&amp;#39;s</text><text start=\"2637.4\" dur=\"3.919\">going to then use these embedments so</text><text start=\"2640.16\" dur=\"5.679\">this</text><text start=\"2641.319\" dur=\"6.321\">will be called by the AI agent with the</text><text start=\"2645.839\" dur=\"3.641\">relevant</text><text start=\"2647.64\" dur=\"4.679\">HTTP uh</text><text start=\"2649.48\" dur=\"5.68\">URL we then execute some code to</text><text start=\"2652.319\" dur=\"5\">basically do the CW for AI scraping web</text><text start=\"2655.16\" dur=\"5.12\">scraping we then have more code which</text><text start=\"2657.319\" dur=\"5.081\">gets the relevant data that we need from</text><text start=\"2660.28\" dur=\"4.52\">here and then we have the super base</text><text start=\"2662.4\" dur=\"6.32\">Vector store which then stores</text><text start=\"2664.8\" dur=\"7.12\">it so let&amp;#39;s go back to the original one</text><text start=\"2668.72\" dur=\"6.68\">we now have our web scraping tool which</text><text start=\"2671.92\" dur=\"6.199\">is cool but the problem is from here the</text><text start=\"2675.4\" dur=\"5.08\">output isn&amp;#39;t really actually anything</text><text start=\"2678.119\" dur=\"5.72\">because the whole point of this tool is</text><text start=\"2680.48\" dur=\"4.96\">to push it into the vector DB so what we</text><text start=\"2683.839\" dur=\"2.841\">want to do then is we want to create</text><text start=\"2685.44\" dur=\"5.48\">another</text><text start=\"2686.68\" dur=\"9.12\">tool which searches the vector DB so for</text><text start=\"2690.92\" dur=\"7.08\">this one if we search Vector DB again so</text><text start=\"2695.8\" dur=\"3.279\">vector and go to super base cuz that&amp;#39;s</text><text start=\"2698\" dur=\"4.96\">what we&amp;#39;re going to</text><text start=\"2699.079\" dur=\"7.04\">use and now you might have to uh create</text><text start=\"2702.96\" dur=\"6.2\">the a new credential again I&amp;#39;m not sure</text><text start=\"2706.119\" dur=\"4.321\">how it works actually on your local I</text><text start=\"2709.16\" dur=\"3.439\">think you may need to create a new</text><text start=\"2710.44\" dur=\"5.399\">credential um and then the operation</text><text start=\"2712.599\" dur=\"7.24\">mode for this one</text><text start=\"2715.839\" dur=\"6.081\">is retrieve documents as to for AI</text><text start=\"2719.839\" dur=\"6.641\">agents and then the name we&amp;#39;re going to</text><text start=\"2721.92\" dur=\"5.84\">give it is this here get from Vector DB</text><text start=\"2726.48\" dur=\"3.4\">store</text><text start=\"2727.76\" dur=\"4.28\">the description we&amp;#39;re going to give it</text><text start=\"2729.88\" dur=\"4.36\">is get documents from Vector DB store</text><text start=\"2732.04\" dur=\"3.44\">this store is populated from Crow for AI</text><text start=\"2734.24\" dur=\"3.879\">web</text><text start=\"2735.48\" dur=\"4.44\">scraping and then the table name we&amp;#39;ll</text><text start=\"2738.119\" dur=\"4\">check from the list and we want match</text><text start=\"2739.92\" dur=\"4.12\">documents and then limit four that&amp;#39;s</text><text start=\"2742.119\" dur=\"4.681\">fine and we&amp;#39;ll just remove the metadata</text><text start=\"2744.04\" dur=\"5.519\">that&amp;#39;s cool then as for the embedding we</text><text start=\"2746.8\" dur=\"5.12\">want to do hugging face and we want it</text><text start=\"2749.559\" dur=\"6.56\">to be the same one again</text><text start=\"2751.92\" dur=\"5.8\">oops um how did I get that again be this</text><text start=\"2756.119\" dur=\"3.361\">one here</text><text start=\"2757.72\" dur=\"4.48\">S mini blah blah blah if you want to get</text><text start=\"2759.48\" dur=\"4.76\">that from here you can just go there</text><text start=\"2762.2\" dur=\"5.639\">copy and then paste</text><text start=\"2764.24\" dur=\"5.92\">in cool so we&amp;#39;ve now got that Vector DB</text><text start=\"2767.839\" dur=\"5.041\">and then we know the embeddings because</text><text start=\"2770.16\" dur=\"4.679\">your query will be embedded tell me if</text><text start=\"2772.88\" dur=\"4.04\">that&amp;#39;s so you can see it better your</text><text start=\"2774.839\" dur=\"4.401\">query is going to be</text><text start=\"2776.92\" dur=\"6.36\">embedded and it has to be embedded by</text><text start=\"2779.24\" dur=\"8.2\">the same model so that it can be uh</text><text start=\"2783.28\" dur=\"6.48\">compared to the same vectors in the</text><text start=\"2787.44\" dur=\"5.08\">database for example if we have this</text><text start=\"2789.76\" dur=\"5.72\">here you know some values blah blah blah</text><text start=\"2792.52\" dur=\"7.079\">right that if these values have been</text><text start=\"2795.48\" dur=\"6.8\">inserted by embedding with that model</text><text start=\"2799.599\" dur=\"4.161\">then different models embed differently</text><text start=\"2802.28\" dur=\"3\">so they&amp;#39;ll have different values for the</text><text start=\"2803.76\" dur=\"2.72\">same thing and so you want to use the</text><text start=\"2805.28\" dur=\"3.16\">same one just it&amp;#39;s like you want to</text><text start=\"2806.48\" dur=\"4.76\">translate into the same language</text><text start=\"2808.44\" dur=\"5.159\">essentially so we go back here that</text><text start=\"2811.24\" dur=\"6.079\">should now all</text><text start=\"2813.599\" dur=\"8.081\">work Moment of Truth there so let me</text><text start=\"2817.319\" dur=\"8.401\">rename this just so that for our own</text><text start=\"2821.68\" dur=\"4.04\">understanding let&amp;#39;s call that web</text><text start=\"2827.119\" dur=\"5.561\">scraper rename that get from V so that&amp;#39;s</text><text start=\"2830.92\" dur=\"5.679\">cool let&amp;#39;s go to the subw workfl and</text><text start=\"2832.68\" dur=\"5.12\">we&amp;#39;ll rename this I don&amp;#39;t think the AI</text><text start=\"2836.599\" dur=\"3.96\">has</text><text start=\"2837.8\" dur=\"6.039\">um the knowledge of what it&amp;#39;s</text><text start=\"2840.559\" dur=\"4.721\">called but we do so so it&amp;#39;s good</text><text start=\"2843.839\" dur=\"3.48\">practice to name it something so that</text><text start=\"2845.28\" dur=\"4.96\">when you go back to look at it you can</text><text start=\"2847.319\" dur=\"7\">know what it&amp;#39;s uh what it</text><text start=\"2850.24\" dur=\"6.76\">is CW for AI inter Victor DB subflow and</text><text start=\"2854.319\" dur=\"3.441\">then this top level one we name it CW</text><text start=\"2857\" dur=\"6.119\">for</text><text start=\"2857.76\" dur=\"7.2\">AI or actually let&amp;#39;s call it n n</text><text start=\"2863.119\" dur=\"5.44\">inet</text><text start=\"2864.96\" dur=\"7.639\">agent cool so moment of truth let&amp;#39;s uh</text><text start=\"2868.559\" dur=\"6.04\">let&amp;#39;s give it a try so we&amp;#39;ll see what&amp;#39;s</text><text start=\"2872.599\" dur=\"4.76\">something You&amp;#39; only know that on</text><text start=\"2874.599\" dur=\"4.52\">that h</text><text start=\"2877.359\" dur=\"6.2\">what was</text><text start=\"2879.119\" dur=\"4.44\">elon&amp;#39;s bid for open</text><text start=\"2883.88\" dur=\"4.88\">AI like 90</text><text start=\"2886.28\" dur=\"5.92\">billion or</text><text start=\"2888.76\" dur=\"5.48\">something let&amp;#39;s see what it does so open</text><text start=\"2892.2\" dur=\"5.68\">AI chat model then it goes to the super</text><text start=\"2894.24\" dur=\"6.119\">base Vector store it will try from here</text><text start=\"2897.88\" dur=\"4.719\">to find information you can see this all</text><text start=\"2900.359\" dur=\"5.281\">from the latest logs here so let me Zoom</text><text start=\"2902.599\" dur=\"5.081\">this up Zoom that out so latest logs</text><text start=\"2905.64\" dur=\"5.24\">from AI agent nod so the plus one is</text><text start=\"2907.68\" dur=\"6.399\">buffer memory the only memory it has is</text><text start=\"2910.88\" dur=\"5.199\">hi who am I so the output is nothing</text><text start=\"2914.079\" dur=\"4.841\">open your ey chat model so then passes</text><text start=\"2916.079\" dur=\"5.401\">in you&amp;#39;re a helpful assistant human</text><text start=\"2918.92\" dur=\"5.8\">memory and then the AI and then the</text><text start=\"2921.48\" dur=\"5.8\">human&amp;#39;s next message whoops let&amp;#39;s see</text><text start=\"2924.72\" dur=\"6.56\">Vector store blah blah it goes through</text><text start=\"2927.28\" dur=\"8.24\">the vector store searches for some</text><text start=\"2931.28\" dur=\"7.319\">stuff then it goes for hugging face</text><text start=\"2935.52\" dur=\"5.12\">inference um open ey chat model blah</text><text start=\"2938.599\" dur=\"4.361\">blah blah couldn&amp;#39;t find</text><text start=\"2940.64\" dur=\"4.959\">anything blah blah blah couldn&amp;#39;t find</text><text start=\"2942.96\" dur=\"4.119\">anything right so possible reason it</text><text start=\"2945.599\" dur=\"3.76\">can&amp;#39;t see anything is because the AI</text><text start=\"2947.079\" dur=\"6.04\">agent needs a little bit of guidance it</text><text start=\"2949.359\" dur=\"6.601\">is a model it&amp;#39;s essentially a black box</text><text start=\"2953.119\" dur=\"5.561\">and so for this I find system messages</text><text start=\"2955.96\" dur=\"5.8\">to be super helpful so going to give it</text><text start=\"2958.68\" dur=\"5.439\">a system message and say always check</text><text start=\"2961.76\" dur=\"4.16\">the vector database first and always</text><text start=\"2964.119\" dur=\"4.401\">check the vector database after each web</text><text start=\"2965.92\" dur=\"4.679\">scrape cuz needs to know to do that then</text><text start=\"2968.52\" dur=\"5.44\">a tip is that the best way for searching</text><text start=\"2970.599\" dur=\"6.321\">is using Google EG htps</text><text start=\"2973.96\" dur=\"5.24\">google.com/ search Q blah blah blah</text><text start=\"2976.92\" dur=\"4\">right and if we commit that and then we</text><text start=\"2979.2\" dur=\"3.72\">can send the same thing again but we&amp;#39;ll</text><text start=\"2980.92\" dur=\"4.159\">click on reuse message and reset the</text><text start=\"2982.92\" dur=\"4.6\">session so it doesn&amp;#39;t try to give us the</text><text start=\"2985.079\" dur=\"6\">answer of I don&amp;#39;t know because it&amp;#39;s in</text><text start=\"2987.52\" dur=\"5.72\">its memory and resend that again and</text><text start=\"2991.079\" dur=\"4.361\">this time it should go in the vector DB</text><text start=\"2993.24\" dur=\"5.079\">yes and then into the web scraper</text><text start=\"2995.44\" dur=\"5.399\">perfect and from this web scraper it</text><text start=\"2998.319\" dur=\"5.961\">will then push it in oh and bring it</text><text start=\"3000.839\" dur=\"5.321\">back right so we have an error so if we</text><text start=\"3004.28\" dur=\"4.72\">stop</text><text start=\"3006.16\" dur=\"6.439\">this oh wait did that actually finally</text><text start=\"3009\" dur=\"6.119\">work there if I messed</text><text start=\"3012.599\" dur=\"4.76\">up don&amp;#39;t think so so I think there&amp;#39;s an</text><text start=\"3015.119\" dur=\"4.161\">issue here in the code so the way to</text><text start=\"3017.359\" dur=\"4\">find the issue for that web scraper is</text><text start=\"3019.28\" dur=\"5.319\">if we go to our other one here our</text><text start=\"3021.359\" dur=\"5.361\">subflow go executions we can see here</text><text start=\"3024.599\" dur=\"5.321\">all the executions and when they&amp;#39;ve</text><text start=\"3026.72\" dur=\"5.839\">happened so H command you see that&amp;#39;s</text><text start=\"3029.92\" dur=\"6.28\">went wrong if we double click command</text><text start=\"3032.559\" dur=\"5.681\">failed python version blah blah blah</text><text start=\"3036.2\" dur=\"7.32\">what&amp;#39;s it saying to</text><text start=\"3038.24\" dur=\"8.16\">run main Echo craw and relas</text><text start=\"3043.52\" dur=\"5.839\">available</text><text start=\"3046.4\" dur=\"4.679\">H so the command has been failed let&amp;#39;s</text><text start=\"3049.359\" dur=\"6.121\">see</text><text start=\"3051.079\" dur=\"6.881\">how invalid URL so HTTP request URL is</text><text start=\"3055.48\" dur=\"4.599\">null and it&amp;#39;ll be passing in null and</text><text start=\"3057.96\" dur=\"5.839\">trying to use that so let&amp;#39;s have a look</text><text start=\"3060.079\" dur=\"7.28\">why would this AI agent be passing in</text><text start=\"3063.799\" dur=\"5.28\">null so if we open AI agent up because I</text><text start=\"3067.359\" dur=\"3.801\">think actually I know why so if we open</text><text start=\"3069.079\" dur=\"5.76\">the web scraper up we can see our</text><text start=\"3071.16\" dur=\"5.6\">workflow inputs now now this here HTTP</text><text start=\"3074.839\" dur=\"5.161\">request URL is to</text><text start=\"3076.76\" dur=\"6.88\">match if we open this up the HTTP</text><text start=\"3080\" dur=\"5.599\">request URL here so if we go back here</text><text start=\"3083.64\" dur=\"4.52\">we can either give it something</text><text start=\"3085.599\" dur=\"4.561\">something fixed or an expression or if</text><text start=\"3088.16\" dur=\"5.08\">we click this little</text><text start=\"3090.16\" dur=\"5.36\">magic icon we can let the model Define</text><text start=\"3093.24\" dur=\"5.359\">this parameter so we can say let the AI</text><text start=\"3095.52\" dur=\"4.559\">agent decide this here so let them</text><text start=\"3098.599\" dur=\"3.841\">decide what the request sh is going to</text><text start=\"3100.079\" dur=\"3.881\">be so now we&amp;#39;ve done that let me copy</text><text start=\"3102.44\" dur=\"4.879\">that reset the</text><text start=\"3103.96\" dur=\"7.639\">session and do it</text><text start=\"3107.319\" dur=\"5.8\">again so Vector DB back to the chat into</text><text start=\"3111.599\" dur=\"3.921\">the web</text><text start=\"3113.119\" dur=\"4.161\">scraper This Is The Moment of Truth Now</text><text start=\"3115.52\" dur=\"5.16\">the web scraper might take</text><text start=\"3117.28\" dur=\"6.839\">a minute or so because it has to go get</text><text start=\"3120.68\" dur=\"5.679\">the HTTP request online bring back that</text><text start=\"3124.119\" dur=\"4.641\">information pass it change it up a</text><text start=\"3126.359\" dur=\"3.96\">little bit embed it and push it into a</text><text start=\"3128.76\" dur=\"3.88\">vector database which kind take a bit of</text><text start=\"3130.319\" dur=\"4.961\">time so it&amp;#39;s gone back to the model</text><text start=\"3132.64\" dur=\"4.12\">which is then checked the vector DB</text><text start=\"3135.28\" dur=\"4.12\">which has then decided actually that it</text><text start=\"3136.76\" dur=\"4.28\">has to go back into the web scraper um</text><text start=\"3139.4\" dur=\"3.679\">which is often not a good sign because</text><text start=\"3141.04\" dur=\"4.44\">it&amp;#39;s haven&amp;#39;t it g</text><text start=\"3143.079\" dur=\"4.04\">twice and nor didn&amp;#39;t get good</text><text start=\"3145.48\" dur=\"3.16\">information on the first</text><text start=\"3147.119\" dur=\"3.121\">the first</text><text start=\"3148.64\" dur=\"4.6\">try</text><text start=\"3150.24\" dur=\"5\">um so we can see if we click on web</text><text start=\"3153.24\" dur=\"4.8\">scraper here from latest logs that the</text><text start=\"3155.24\" dur=\"6.119\">query that it&amp;#39;s sent in is Google search</text><text start=\"3158.04\" dur=\"6.6\">Elon Musk bid for open AI um and then</text><text start=\"3161.359\" dur=\"7\">it&amp;#39;ll have gotten back all this scraped</text><text start=\"3164.64\" dur=\"6.479\">info so this here is just part of it</text><text start=\"3168.359\" dur=\"4.041\">I&amp;#39;ll show you in the executions after it</text><text start=\"3171.119\" dur=\"3.96\">runs</text><text start=\"3172.4\" dur=\"4.84\">this um what it actually looks like once</text><text start=\"3175.079\" dur=\"4.361\">it&amp;#39;s properly passed everything</text><text start=\"3177.24\" dur=\"3.559\">CU this is only one chunk of I don&amp;#39;t</text><text start=\"3179.44\" dur=\"4.399\">know however many chunks it would be</text><text start=\"3180.799\" dur=\"4.881\">that get returned like 80 maybe so let</text><text start=\"3183.839\" dur=\"3.041\">me see why is it just continually going</text><text start=\"3185.68\" dur=\"5.24\">back and</text><text start=\"3186.88\" dur=\"4.04\">forth what most recent</text><text start=\"3194.079\" dur=\"4.841\">ones right so let&amp;#39;s see I couldn&amp;#39;t find</text><text start=\"3196.88\" dur=\"4\">specific information including whether</text><text start=\"3198.92\" dur=\"4.32\">it was around that billion the details</text><text start=\"3200.88\" dur=\"5.88\">of it such as might we W</text><text start=\"3203.24\" dur=\"4.92\">reports figure available discour</text><text start=\"3206.76\" dur=\"3.12\">interesting right so anyway what we can</text><text start=\"3208.16\" dur=\"4.639\">do is if we go to web scraper we can go</text><text start=\"3209.88\" dur=\"5.36\">see what it&amp;#39;s been scraping so if we go</text><text start=\"3212.799\" dur=\"4.721\">on here you see these have then popped</text><text start=\"3215.24\" dur=\"4.92\">in so it went in four times so first</text><text start=\"3217.52\" dur=\"5.52\">time click on this we can see what it&amp;#39;s</text><text start=\"3220.16\" dur=\"4.639\">been been looking for we open up execute</text><text start=\"3223.04\" dur=\"4.039\">command see that it&amp;#39;s tried to look up</text><text start=\"3224.799\" dur=\"4.441\">El and must bed for open a ey then it</text><text start=\"3227.079\" dur=\"5.561\">gets all of our information back</text><text start=\"3229.24\" dur=\"5.76\">especially from the Google um search and</text><text start=\"3232.64\" dur=\"3.8\">then we get only the bit we need and</text><text start=\"3235\" dur=\"3.839\">then from there it goes at the vector d</text><text start=\"3236.44\" dur=\"5.399\">DB and the way that it&amp;#39;s stalled and as</text><text start=\"3238.839\" dur=\"5.601\">you can see here that we have three</text><text start=\"3241.839\" dur=\"5.121\">pages that it&amp;#39;s stalled of information</text><text start=\"3244.44\" dur=\"4.159\">which is uh put into chunks so we have</text><text start=\"3246.96\" dur=\"3.68\">the first chunk here and the second</text><text start=\"3248.599\" dur=\"5.321\">chunk third chunk blah blah</text><text start=\"3250.64\" dur=\"6.12\">blah um page content opening eye rejects</text><text start=\"3253.92\" dur=\"6.28\">Elon musk&amp;#39;s 97 billion bids</text><text start=\"3256.76\" dur=\"6.12\">so that&amp;#39;s getting pushed into the vector</text><text start=\"3260.2\" dur=\"6.8\">DB so now if we can back</text><text start=\"3262.88\" dur=\"7.76\">out to go here one would have thought</text><text start=\"3267\" dur=\"5.48\">that this Vector DB run would have found</text><text start=\"3270.64\" dur=\"6.32\">the relevant</text><text start=\"3272.48\" dur=\"6.48\">information so let me check here what is</text><text start=\"3276.96\" dur=\"5.24\">it brought back</text><text start=\"3278.96\" dur=\"5.44\">so El musk opening ey bid value on the</text><text start=\"3282.2\" dur=\"5.399\">left for debugging that&amp;#39;s the input on</text><text start=\"3284.4\" dur=\"7.04\">the output we have um four runs so if we</text><text start=\"3287.599\" dur=\"8.881\">look at run one let me command F</text><text start=\"3291.44\" dur=\"6.72\">bed that there see</text><text start=\"3296.48\" dur=\"3.879\">right so none on</text><text start=\"3298.16\" dur=\"4.399\">here number</text><text start=\"3300.359\" dur=\"3.841\">two none</text><text start=\"3302.559\" dur=\"5.28\">there</text><text start=\"3304.2\" dur=\"9.2\">three none there and</text><text start=\"3307.839\" dur=\"8.48\">four none here right just to test my</text><text start=\"3313.4\" dur=\"5.36\">sanity we&amp;#39;re going to bring back the one</text><text start=\"3316.319\" dur=\"4.121\">we used to have and we&amp;#39;re going to ask</text><text start=\"3318.76\" dur=\"4.359\">it the same</text><text start=\"3320.44\" dur=\"6.24\">questions so we&amp;#39;ll see what&amp;#39;s the latest</text><text start=\"3323.119\" dur=\"5.281\">news on Buy open AI</text><text start=\"3326.68\" dur=\"5.359\">paste it in</text><text start=\"3328.4\" dur=\"7.28\">here let&amp;#39;s see what it</text><text start=\"3332.039\" dur=\"6.841\">does Vector goes back to chat checks out</text><text start=\"3335.68\" dur=\"5.919\">WB scraping we&amp;#39;ll do a little bit of WB</text><text start=\"3338.88\" dur=\"4.32\">scraping and then it should come back</text><text start=\"3341.599\" dur=\"4.561\">like that and the</text><text start=\"3343.2\" dur=\"5.04\">meantime boom so let&amp;#39;s come back with</text><text start=\"3346.16\" dur=\"3.72\">actual information latest news regarding</text><text start=\"3348.24\" dur=\"6\">the Yow musk bed for open I include the</text><text start=\"3349.88\" dur=\"7\">following bid details 97.4 billion bid</text><text start=\"3354.24\" dur=\"5.24\">100 billion offer rejected blah blah</text><text start=\"3356.88\" dur=\"6.88\">blah I find more details here right</text><text start=\"3359.48\" dur=\"6.72\">so the old one works what&amp;#39;s happened</text><text start=\"3363.76\" dur=\"5.52\">what&amp;#39;s the what&amp;#39;s the difference here</text><text start=\"3366.2\" dur=\"4.52\">right so let&amp;#39;s delete all these again</text><text start=\"3369.28\" dur=\"3.519\">I&amp;#39;m going to try it one more time</text><text start=\"3370.72\" dur=\"6.28\">because I&amp;#39;ve changed it turns out that</text><text start=\"3372.799\" dur=\"7.481\">the Chunk in was 500 not a</text><text start=\"3377\" dur=\"5.68\">th000 so let&amp;#39;s try what&amp;#39;s the latest</text><text start=\"3380.28\" dur=\"5.759\">news El on buy and open the</text><text start=\"3382.68\" dur=\"5.84\">ey save that so Vector DB there&amp;#39;s</text><text start=\"3386.039\" dur=\"5.401\">nothing in there so the model is going</text><text start=\"3388.52\" dur=\"6.16\">to think and then it&amp;#39;s going</text><text start=\"3391.44\" dur=\"5.84\">to give me some</text><text start=\"3394.68\" dur=\"5.6\">info how&amp;#39;s that finding it oh it&amp;#39;s</text><text start=\"3397.28\" dur=\"6.96\">finding it from my</text><text start=\"3400.28\" dur=\"6.319\">memory why do it give me the exact same</text><text start=\"3404.24\" dur=\"5.04\">info oh is it from my Vector DB I</text><text start=\"3406.599\" dur=\"5.881\">thought I cleared the vector</text><text start=\"3409.28\" dur=\"3.2\">DB me</text><text start=\"3414.599\" dur=\"3.641\">see using a different</text><text start=\"3426.24\" dur=\"5.839\">DV interesting What&amp;#39;s Happening Here is</text><text start=\"3429.24\" dur=\"2.839\">it from memory</text><text start=\"3433.119\" dur=\"5.081\">maybe that is weird let me try that</text><text start=\"3435.68\" dur=\"5.52\">again cuz that Vector DB should be</text><text start=\"3438.2\" dur=\"3\">completely</text><text start=\"3442.319\" dur=\"4.601\">empty yes so it must have been from</text><text start=\"3444.96\" dur=\"5.119\">memory so maybe the chunin has been the</text><text start=\"3446.92\" dur=\"4.76\">issue so if we web scrape now should</text><text start=\"3450.079\" dur=\"4.321\">push it into the Victor DB so it should</text><text start=\"3451.68\" dur=\"4.679\">go search again bring the info back</text><text start=\"3454.4\" dur=\"3.639\">process the</text><text start=\"3456.359\" dur=\"6.601\">info go</text><text start=\"3458.039\" dur=\"7.481\">on boom and we&amp;#39;re back ha so the problem</text><text start=\"3462.96\" dur=\"5.92\">was the chunkin the chunkin has to be</text><text start=\"3465.52\" dur=\"6.2\">500 and then it will work but there you</text><text start=\"3468.88\" dur=\"4.76\">go so there you have it we can now</text><text start=\"3471.72\" dur=\"6\">search stuff online what&amp;#39;s the latest</text><text start=\"3473.64\" dur=\"6.439\">news El on nearly 100 billion 97.4 which</text><text start=\"3477.72\" dur=\"6.56\">is exactly what it is if you check it</text><text start=\"3480.079\" dur=\"9.561\">out we&amp;#39;ll go online let&amp;#39;s see Elon Musk</text><text start=\"3484.28\" dur=\"7.44\">bed open AI like next oops yellow musk</text><text start=\"3489.64\" dur=\"6.88\">bed open</text><text start=\"3491.72\" dur=\"6.52\">AI 97 billion boom so it searches online</text><text start=\"3496.52\" dur=\"3.16\">that is well cool so there you go there</text><text start=\"3498.24\" dur=\"3.52\">you have it I hope you enjoyed if you</text><text start=\"3499.68\" dur=\"3.48\">did like comment subscribe all that good</text><text start=\"3501.76\" dur=\"3.72\">stuff link will be in the description</text><text start=\"3503.16\" dur=\"4.159\">for apply the ey Community I&amp;#39;m starting</text><text start=\"3505.48\" dur=\"4\">a new community Community for AI</text><text start=\"3507.319\" dur=\"4.72\">enthusiasts and entrepreneurs to learn</text><text start=\"3509.48\" dur=\"4.48\">stuff like this and to actually use them</text><text start=\"3512.039\" dur=\"3.601\">in the real world if you&amp;#39;re interested</text><text start=\"3513.96\" dur=\"3.72\">the link will be below anyway like</text><text start=\"3515.64\" dur=\"3.479\">comment subscribe all that good stuff</text><text start=\"3517.68\" dur=\"3.879\">and I&amp;#39;ll see you in the next video take</text><text start=\"3519.119\" dur=\"2.44\">care</text></transcript>"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion4": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion3": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion5": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "Notion6": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion7": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion8": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion9": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion Trigger": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Notion10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "XML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "XML": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion10": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion11": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Notion14",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion14": {
+      "main": [
+        [
+          {
+            "node": "Notion11",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Notion Client": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Firecrawl": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Firecrawl Execute": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "86aebb1a-efbe-4623-9928-e5ac3eb91bba",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5e393c6f44392d3936ffca2e9e2dac28fed614d65a5879457461b30357ac3cd9"
+  },
+  "id": "l36VPVEd94SXYODV",
+  "tags": []
+}
