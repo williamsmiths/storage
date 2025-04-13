@@ -1,0 +1,974 @@
+{
+  "name": "MCP Servers",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "4665dadb-5fc8-431a-8a67-653ff128f126"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        -280
+      ],
+      "id": "4170d3cc-8e99-4d96-94e2-d2a61fc87311",
+      "name": "MCP Server Notion",
+      "webhookId": "4665dadb-5fc8-431a-8a67-653ff128f126"
+    },
+    {
+      "parameters": {
+        "path": "761ee5e0-3afb-4354-b7ef-7085ff693022"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 1,
+      "position": [
+        380,
+        -280
+      ],
+      "id": "2768cee0-254c-481e-a74e-92adf8b969b7",
+      "name": "MCP Server Firecrawl",
+      "webhookId": "761ee5e0-3afb-4354-b7ef-7085ff693022"
+    },
+    {
+      "parameters": {
+        "toolDescription": "This tool scrape the content of an URL by using Firecrawl API",
+        "method": "POST",
+        "url": "https://api.firecrawl.dev/v1/scrape",
+        "sendHeaders": true,
+        "parametersHeaders": {
+          "values": [
+            {
+              "name": "Content-Type",
+              "valueProvider": "fieldValue",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "valueProvider": "fieldValue",
+              "value": "Bearer "
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "=json",
+        "parametersBody": {
+          "values": [
+            {}
+          ]
+        },
+        "jsonBody": "{\n  \"url\": \"{URL}\",\n  \"formats\": [ \"markdown\" ]\n}",
+        "placeholderDefinitions": {
+          "values": [
+            {
+              "name": "URL",
+              "description": "The URL you want to perform the scape",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        420,
+        -60
+      ],
+      "id": "0112f50f-7d70-4913-af78-0ba26209e309",
+      "name": "Scrape"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "channelId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Channel_ID', `The youtube channel id`, 'string') }}"
+      },
+      "type": "n8n-nodes-base.youTubeTool",
+      "typeVersion": 1,
+      "position": [
+        -60,
+        460
+      ],
+      "id": "1efe021a-d6e3-4c2d-9e33-1c20b8b380a5",
+      "name": "Channel ID",
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "XA8Zd3E0W9G8V3Po",
+          "name": "YouTube account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "path": "4db199c1-11d4-4945-b647-8d3839801e0b"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 1,
+      "position": [
+        -280,
+        240
+      ],
+      "id": "567b6b69-e5da-4c4e-942c-3b527f2b2b9a",
+      "name": "MCP Server Youtube",
+      "webhookId": "4db199c1-11d4-4945-b647-8d3839801e0b"
+    },
+    {
+      "parameters": {
+        "path": "697d65b2-2670-4966-a824-dc6e5d54c003"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 1,
+      "position": [
+        400,
+        240
+      ],
+      "id": "2ad03107-5db9-4903-a4aa-0512a79f8a31",
+      "name": "MCP Server Gmail",
+      "webhookId": "697d65b2-2670-4966-a824-dc6e5d54c003"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "messageId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message_ID', `Get a specific message by using Message ID`, 'string') }}"
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        620,
+        460
+      ],
+      "id": "a758be97-1b85-4ca3-928d-6d827a67d7df",
+      "name": "Get",
+      "webhookId": "3a215344-01c4-4a2b-9f4e-39168fba9167",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "HrUawguRK1ZddhW1",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "markAsRead",
+        "messageId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message_ID', `Mark a specific message as Read by using Message ID`, 'string') }}"
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        480,
+        460
+      ],
+      "id": "01308e21-3279-43bb-a8c8-3eb21e64cf1e",
+      "name": "Mark As Read",
+      "webhookId": "b22227e3-cfd5-440d-b229-f657efeb357c",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "HrUawguRK1ZddhW1",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "operation": "getAll",
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', `Get mails from google mail`, 'boolean') }}",
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        340,
+        460
+      ],
+      "id": "4165d118-7341-48af-b409-73e8dd390bfa",
+      "name": "Get All",
+      "webhookId": "4337de8d-285b-4743-b9e8-e99257395acb",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "HrUawguRK1ZddhW1",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "reply",
+        "messageId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message_ID', `The message that receives the reply by using Message ID`, 'string') }}",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', `The content of the Message`, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        780,
+        460
+      ],
+      "id": "e5171cb3-6bcf-4eb5-a74b-6f8e30787099",
+      "name": "Reply",
+      "webhookId": "5a5dd4f4-ee98-4f94-95ce-a149e03d0c10",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "HrUawguRK1ZddhW1",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "pageId": {
+          "__rl": true,
+          "mode": "url",
+          "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Parent_Page', ``, 'string') }}"
+        },
+        "title": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Title', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notionTool",
+      "typeVersion": 2.2,
+      "position": [
+        -180,
+        -60
+      ],
+      "id": "3c8add63-04d2-43e2-8a8a-bc97c0c462c9",
+      "name": "CreatePage",
+      "credentials": {
+        "notionApi": {
+          "id": "ricgFSt0RLvphcmg",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "operation": "search",
+        "text": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Search_Text', `The text to search for\n`, 'string') }}",
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', `Whether to return all results or only up to a given limit\n`, 'boolean') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notionTool",
+      "typeVersion": 2.2,
+      "position": [
+        -60,
+        -60
+      ],
+      "id": "0c0a1e12-8575-4c37-a099-c9a397b0115b",
+      "name": "SearchPage",
+      "credentials": {
+        "notionApi": {
+          "id": "ricgFSt0RLvphcmg",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "resource": "block",
+        "blockId": {
+          "__rl": true,
+          "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Block', `The Notion Block to get all children from, when using 'By URL' mode make sure to use the URL of the block itself, you can find it in block parameters in Notion under 'Copy link to block'\n`, 'string') }}",
+          "mode": "url"
+        }
+      },
+      "type": "n8n-nodes-base.notionTool",
+      "typeVersion": 2.2,
+      "position": [
+        60,
+        -60
+      ],
+      "id": "d355c448-3ded-416d-b2d2-c16341b8224a",
+      "name": "BlockAppendAfter",
+      "credentials": {
+        "notionApi": {
+          "id": "ricgFSt0RLvphcmg",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "resource": "block",
+        "operation": "getAll",
+        "blockId": {
+          "__rl": true,
+          "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Block', `The Notion Block to get all children from, when using 'By URL' mode make sure to use the URL of the block itself, you can find it in block parameters in Notion under 'Copy link to block'\n`, 'string') }}",
+          "mode": "url"
+        },
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', `Whether to return all results or only up to a given limit\n`, 'boolean') }}",
+        "fetchNestedBlocks": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Also_Fetch_Nested_Blocks', ``, 'boolean') }}"
+      },
+      "type": "n8n-nodes-base.notionTool",
+      "typeVersion": 2.2,
+      "position": [
+        180,
+        -60
+      ],
+      "id": "564a2fee-0c4a-4e1e-94df-4857ddc7cd19",
+      "name": "BlockGetChildBlocks",
+      "credentials": {
+        "notionApi": {
+          "id": "ricgFSt0RLvphcmg",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "This tool scrape the content of an URL by using Firecrawl API",
+        "method": "POST",
+        "url": "https://api.firecrawl.dev/v1/scrape",
+        "sendHeaders": true,
+        "parametersHeaders": {
+          "values": [
+            {
+              "name": "Content-Type",
+              "valueProvider": "fieldValue",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "valueProvider": "fieldValue",
+              "value": "Bearer "
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "=json",
+        "parametersBody": {
+          "values": [
+            {}
+          ]
+        },
+        "jsonBody": "{\n \"url\": \"{URL}\",\n \"limit\": 10,\n \"scrapeOptions\": {\n \"formats\": [ \"markdown\" ]\n }\n}",
+        "placeholderDefinitions": {
+          "values": [
+            {
+              "name": "URL",
+              "description": "The URL you want to perform the scape",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        600,
+        -60
+      ],
+      "id": "a947b349-1a5f-4d38-bc7c-4975c9344a8f",
+      "name": "Crawl"
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "returnAll": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Return_All', `Whether to return all results or only up to a given limit\n`, 'boolean') }}",
+        "filters": {},
+        "options": {}
+      },
+      "type": "n8n-nodes-base.youTubeTool",
+      "typeVersion": 1,
+      "position": [
+        60,
+        460
+      ],
+      "id": "e381d078-04f9-4812-8e5e-afa398c00ea6",
+      "name": "Get Many Videos",
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "XA8Zd3E0W9G8V3Po",
+          "name": "YouTube account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "get",
+        "videoId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Video_ID', `The youtube video id`, 'string') }}",
+        "part": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Fields', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.youTubeTool",
+      "typeVersion": 1,
+      "position": [
+        -200,
+        460
+      ],
+      "id": "48862a94-8602-4859-8d36-1b46c38b3470",
+      "name": "Video ID",
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "XA8Zd3E0W9G8V3Po",
+          "name": "YouTube account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "path": "c08ac829-d451-4590-8608-fb91a41b20e3"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 1,
+      "position": [
+        -300,
+        720
+      ],
+      "id": "c20b7e50-9589-4948-b2db-3259978f1ef8",
+      "name": "MCP Server BrowserUse",
+      "webhookId": "c08ac829-d451-4590-8608-fb91a41b20e3"
+    },
+    {
+      "parameters": {
+        "connectionType": "local",
+        "operation": "getTask",
+        "taskId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Task_ID', ``, 'string') }}"
+      },
+      "type": "n8n-nodes-browser-use.browserUseTool",
+      "typeVersion": 1,
+      "position": [
+        -20,
+        940
+      ],
+      "id": "7c3e42c8-6f15-4639-95f8-575f4b60ff1a",
+      "name": "Get Task",
+      "credentials": {
+        "browserUseLocalBridgeApi": {
+          "id": "V5HW3VZJeodhd8xk",
+          "name": "Browser Use Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "connectionType": "local",
+        "instructions": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Instructions', ``, 'string') }}",
+        "aiProvider": "google"
+      },
+      "type": "n8n-nodes-browser-use.browserUseTool",
+      "typeVersion": 1,
+      "position": [
+        -220,
+        940
+      ],
+      "id": "1a617e20-d25d-46f4-8a5d-b33cf48f2144",
+      "name": "Run Task",
+      "credentials": {
+        "browserUseLocalBridgeApi": {
+          "id": "V5HW3VZJeodhd8xk",
+          "name": "Browser Use Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "connectionType": "local",
+        "operation": "getTaskStatus",
+        "taskId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Task_ID', ``, 'string') }}"
+      },
+      "type": "n8n-nodes-browser-use.browserUseTool",
+      "typeVersion": 1,
+      "position": [
+        180,
+        940
+      ],
+      "id": "daa0be4c-dde7-44ed-a0b5-201a9e62da8c",
+      "name": "Get Task Status",
+      "credentials": {
+        "browserUseLocalBridgeApi": {
+          "id": "V5HW3VZJeodhd8xk",
+          "name": "Browser Use Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "connectionType": "local",
+        "operation": "pauseTask",
+        "taskId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Task_ID', ``, 'string') }}"
+      },
+      "type": "n8n-nodes-browser-use.browserUseTool",
+      "typeVersion": 1,
+      "position": [
+        380,
+        940
+      ],
+      "id": "863ea303-60c6-433b-b37d-656f0c094232",
+      "name": "Pause Task",
+      "credentials": {
+        "browserUseLocalBridgeApi": {
+          "id": "V5HW3VZJeodhd8xk",
+          "name": "Browser Use Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "connectionType": "local",
+        "operation": "stopTask",
+        "taskId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Task_ID', ``, 'string') }}"
+      },
+      "type": "n8n-nodes-browser-use.browserUseTool",
+      "typeVersion": 1,
+      "position": [
+        580,
+        940
+      ],
+      "id": "a1e239ed-8555-47d0-a9af-79827aef579a",
+      "name": "Stop Task",
+      "credentials": {
+        "browserUseLocalBridgeApi": {
+          "id": "V5HW3VZJeodhd8xk",
+          "name": "Browser Use Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "connectionType": "local",
+        "operation": "resumeTask",
+        "taskId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Task_ID', ``, 'string') }}"
+      },
+      "type": "n8n-nodes-browser-use.browserUseTool",
+      "typeVersion": 1,
+      "position": [
+        780,
+        940
+      ],
+      "id": "2232a399-a338-4edc-98c9-7b8412ea9737",
+      "name": "Resume Task",
+      "credentials": {
+        "browserUseLocalBridgeApi": {
+          "id": "V5HW3VZJeodhd8xk",
+          "name": "Browser Use Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-embedding-exp-03-07"
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        100
+      ],
+      "id": "43540483-8787-42fc-8f65-e3445a8c6ed5",
+      "name": "Embeddings Google Gemini",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "VytWkQ0CA5yghGIf",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "path": "aec5c7b1-d371-4dc5-8419-a3925ac2eee4"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        -300
+      ],
+      "id": "e5d16860-392f-4d73-94ac-e7c189f87ac1",
+      "name": "MCP Server Vector Store",
+      "webhookId": "aec5c7b1-d371-4dc5-8419-a3925ac2eee4"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use this tool to fetch all available documents, including the table schema if the file is a CSV or Excel file.",
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "document_metadata",
+          "mode": "list",
+          "cachedResultName": "document_metadata"
+        },
+        "returnAll": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.5,
+      "position": [
+        1340,
+        -60
+      ],
+      "id": "d2bd5c04-0962-4fa9-a125-be09500f6c1d",
+      "name": "List Documents",
+      "credentials": {
+        "postgres": {
+          "id": "7aZHrNJx2qgPLE8U",
+          "name": "Supabase Gemini"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Given a file ID, fetches the text from the document.",
+        "operation": "executeQuery",
+        "query": "SELECT \n    string_agg(content, ' ') as document_text\nFROM documents\n  WHERE metadata->>'file_id' = $1\nGROUP BY metadata->>'file_id';",
+        "options": {
+          "queryReplacement": "={{ $fromAI('file_id') }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.5,
+      "position": [
+        1480,
+        -60
+      ],
+      "id": "8be02b06-64be-4944-8bf3-5279611b9dc6",
+      "name": "Get File Contents",
+      "credentials": {
+        "postgres": {
+          "id": "7aZHrNJx2qgPLE8U",
+          "name": "Supabase Gemini"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Run a SQL query - use this to query from the document_rows table once you know the file ID you are querying. dataset_id is the file_id and you are always using the row_data for filtering, which is a jsonb field that has all the keys from the file schema given in the document_metadata table.\n\nExample query:\n\nSELECT AVG((row_data->>'revenue')::numeric)\nFROM document_rows\nWHERE dataset_id = '123';\n\nExample query 2:\n\nSELECT \n    row_data->>'category' as category,\n    SUM((row_data->>'sales')::numeric) as total_sales\nFROM dataset_rows\nWHERE dataset_id = '123'\nGROUP BY row_data->>'category';",
+        "operation": "executeQuery",
+        "query": "{{ $fromAI('sql_query') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgresTool",
+      "typeVersion": 2.5,
+      "position": [
+        1640,
+        -60
+      ],
+      "id": "0ad79e01-2b27-40ec-90ef-8244d5cda5eb",
+      "name": "Query Document Rows",
+      "credentials": {
+        "postgres": {
+          "id": "7aZHrNJx2qgPLE8U",
+          "name": "Supabase Gemini"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "documents",
+        "toolDescription": "Use RAG to look up information in the knowledgebase.",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "topK": 5,
+        "options": {
+          "queryName": "match_documents"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.1,
+      "position": [
+        1020,
+        -80
+      ],
+      "id": "69dc1622-a194-4cc8-93f9-6120076c120d",
+      "name": "documents",
+      "credentials": {
+        "supabaseApi": {
+          "id": "GjoO2VGU1trit5mc",
+          "name": "Supabase Gemini"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Scrape": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Firecrawl",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Channel ID": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Youtube",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Gmail",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mark As Read": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Gmail",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get All": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Gmail",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reply": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Gmail",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CreatePage": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Notion",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SearchPage": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Notion",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "BlockAppendAfter": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Notion",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "BlockGetChildBlocks": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Notion",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crawl": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Firecrawl",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Many Videos": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Youtube",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Video ID": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Youtube",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Task": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server BrowserUse",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run Task": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server BrowserUse",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Task Status": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server BrowserUse",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pause Task": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server BrowserUse",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Stop Task": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server BrowserUse",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resume Task": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server BrowserUse",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Google Gemini": {
+      "ai_embedding": [
+        [
+          {
+            "node": "documents",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List Documents": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Vector Store",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get File Contents": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Vector Store",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Query Document Rows": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Vector Store",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "documents": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Vector Store",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "48cefaec-6a3f-4b3c-aef0-5d8f2c62d790",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5e393c6f44392d3936ffca2e9e2dac28fed614d65a5879457461b30357ac3cd9"
+  },
+  "id": "sVMclWw8ZXyDzue0",
+  "tags": []
+}
