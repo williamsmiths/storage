@@ -1,3 +1,4 @@
+```
 Custom Cursor Rule System (Tof's Prompt)
 │
 ├── Core Goal: Make the Cursor AI assistant smarter, more consistent, and context-aware for coding tasks.
@@ -57,7 +58,7 @@ Custom Cursor Rule System (Tof's Prompt)
 │   ├── TDD: "Using TDD, implement feature Z. First, generate tests..." -> "Write code to pass tests..."
 │   ├── Memory: "Implement feature A. Remember decision B (check memory)..."
 │   └── Combined: Mix keywords (Plan, TDD, Remember, Rule) for complex features.
-
+```
 ---
 **The 3Ac Framework**
 
