@@ -93,23 +93,26 @@ Confirm that the file `./documentations/task/cms_tasks.md` has been created.
 
 **(This part should only be executed after all files in PART 1 have been successfully created and populated as specified.)**
 
-Now, please revise the content of the files within the ".cursor/rules" directory based on the specifics of the current project.
-**Remember the guiding principle: Do NOT modify any existing project code files. These changes apply ONLY to the files within `.cursor/rules`.**
+Now, please revise the content of the files within the ".cursor/rules" directory based on the specifics of this current project.
+**Remember the guiding principle: Do NOT modify any existing project code files. These changes apply ONLY to the files within `.cursor/rules`.** These files will serve as critical context and guidelines for our AI-assisted development workflows within this project.
 
 1.  **For the `.cursor/rules/overview.mdc` file:**
-    Update its content to provide a comprehensive overview of *this current project*. This should include:
-    *   A general project description and its primary goals.
-    *   The main directory structure of *this current project* (list key folders and their purpose).
-    *   Key technologies, frameworks, and libraries currently being used in *this current project*.
+    Please act as a Senior [Specify Current Project Language, e.g., Go, Python, TypeScript] Developer. You have over 20 years of experience in architecting large-scale, maintainable applications, particularly with [If Go, keep 'Go applications' and 'database interactions'. If other language, adapt to '[Project Language] applications' and relevant specializations, e.g., 'web services' or 'data processing pipelines'] and complex database interactions. Your primary goal for this task is to customize the `.cursor/rules` files to be highly specific and effective for the current project, drawing upon your extensive experience.
+    Update its content to provide a comprehensive, architect-level overview of *this current project*. This should include:
+    *   A general project description, its primary goals, and the core problems it solves.
+    *   The main directory structure of *this current project* (list key folders, their purpose, and how they interact at a high level).
+    *   Key technologies, frameworks, libraries, and architectural patterns currently being used in *this current project*. Explain *why* these choices were made if relevant.
 
 2.  **For the other rule files in `.cursor/rules` (`break-down-rule.mdc`, `implementation-rule.mdc`, `technical-design-documentation_rule.mdc`):**
-    Adapt their existing content (which was fetched from generic examples) to reflect the specific guidelines, standards, and processes relevant to *this current project*. Ensure their content aligns with how tasks are broken down, how implementation should proceed, and how technical design documentation is structured *for this specific project*.
+    Adapt their existing content (which was fetched from generic examples or previous iterations) to reflect the specific guidelines, standards, and processes relevant to *this current project*, consistent with best practices for large-scale, maintainable systems. Ensure their content aligns with how tasks are broken down, how implementation should proceed (including coding standards, testing strategies, and review processes), and how technical design documentation is structured and maintained *for this specific project*.
     For example:
-    *   `.cursor/rules/break-down-rule.mdc` should detail how to break down tasks/features for *this* project, considering its workflow and team structure.
-    *   `.cursor/rules/implementation-rule.mdc` should outline coding standards, best practices, and implementation steps specific to *this* project's technology stack and architecture.
-    *   `.cursor/rules/technical-design-documentation_rule.mdc` should define the template, sections, and level of detail expected for technical design documents specifically used in *this* project.
+    *   `.cursor/rules/break-down-rule.mdc` should detail how to break down features/epics into manageable tasks for *this* project, considering its agile workflow, team structure, and the need for clear deliverables and estimations. Emphasize a clear Definition of Done.
+    *   `.cursor/rules/implementation-rule.mdc` should outline coding standards (e.g., naming conventions, error handling, logging), best practices for [Project Language], testing requirements (unit, integration, e2e), PR/MR (Pull Request/Merge Request) guidelines, and any specific CI/CD considerations relevant to *this* project's technology stack and architecture.
+    *   `.cursor/rules/technical-design-documentation_rule.mdc` should define the template (e.g., ADRs - Architecture Decision Records, standard design doc sections), required sections, expected level of detail (balancing thoroughness with conciseness), and the review/approval process for technical design documents specifically used in *this* project.
 
-Please make these changes directly in the respective files within the ".cursor/rules" directory. After you have made the changes, please confirm.
+Please make these changes directly in the respective files within the ".cursor/rules" directory. When rewriting the `break-down-rule.mdc`, `implementation-rule.mdc`, and `technical-design-documentation_rule.mdc` files to suit the current project, please base the revisions on the existing content within those files. After you have completed all the above steps, please list a checklist of the tasks performed in the file `./documentations/task/setting_tasks.md`.
+
+Upon completion, please confirm.
 
 ---
 **Final Check:**
