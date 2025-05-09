@@ -1,11 +1,11 @@
 --------------------------------------------------------------------------------
 PROMPT FILE: Comprehensive Setup for Project Documentation and Rules
 --------------------------------------------------------------------------------
-
+**Luôn trả lời trong chat tiếng việt**
 **Overall Objective:**
 To set up a specific directory structure for project documentation and internal AI rules (`.cursor/rules`), populate initial rule files with content from provided URLs, create new empty documentation files, and then guide the AI to customize the rule files according to the current project's context.
 **Crucial Guiding Principle: At no point should any existing code files within this project be modified. All operations are strictly limited to creating or modifying the specified documentation and `.cursor` rule files.**
-
+**Kiểm tra .cursor/rules các file có rồi thì qua **PART 2: Customizing `.cursor/rules` Files for the Current Project** tiếp tục**
 ---
 **PART 1: Initial Directory and File Creation**
 ---
@@ -85,7 +85,8 @@ Confirm that the file `./documentations/feature/cms_ttd.md` has been created.
 
 Please create the directory structure `./documentations/task/` if it doesn't already exist in the project root.
 Then, create an empty file named `cms_tasks.md` inside the `./documentations/task/` directory.
-Confirm that the file `./documentations/task/cms_tasks.md` has been created.
+Then, create an empty file named `setting_tasks.md` inside the `./documentations/task/` directory.
+Confirm that the file `./documentations/task/setting_tasks.md` has been created.
 
 *(Wait for confirmation before proceeding. At this point, all initial file/directory creation should be complete.)*
 
