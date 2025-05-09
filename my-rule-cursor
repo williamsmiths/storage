@@ -93,7 +93,7 @@ Confirm that the file `./documentations/task/setting_tasks.md` has been created.
 ---
 **PART 2: Customizing `.cursor/rules` Files for the Current Project**
 ---
-**Hãy đọc cấu trúc project hiện tại và thực hiện các yêu cầu bên dưới đây**
+**Hãy đọc cấu trúc project hiện tại ở ./ và thực hiện các yêu cầu bên dưới đây hãy tự trả lời các câu hỏi và thực hiện**
 
 **(This part should only be executed after all files in PART 1 have been successfully created and populated as specified.)**
 
