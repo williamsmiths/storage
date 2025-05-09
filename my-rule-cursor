@@ -1,74 +1,126 @@
-
 --------------------------------------------------------------------------------
-PROMPT FILE: Thiết lập cấu trúc thư mục và file cho .cursor/rules
+PROMPT FILE: Comprehensive Setup for Project Documentation and Rules
 --------------------------------------------------------------------------------
 
-**Mục tiêu:** Tạo thư mục `.cursor/rules` và các file quy tắc bên trong với nội dung được lấy từ các URL cụ thể.
+**Overall Objective:**
+To set up a specific directory structure for project documentation and internal AI rules (`.cursor/rules`), populate initial rule files with content from provided URLs, create new empty documentation files, and then guide the AI to customize the rule files according to the current project's context.
+**Crucial Guiding Principle: At no point should any existing code files within this project be modified. All operations are strictly limited to creating or modifying the specified documentation and `.cursor` rule files.**
 
 ---
-**Bước 1: Tạo thư mục gốc `.cursor`**
+**PART 1: Initial Directory and File Creation**
 ---
 
-Hãy tạo một thư mục tên là ".cursor" (có dấu chấm ở đầu) trong thư mục gốc của project.
-
-*(Chờ Cursor xác nhận hoàn thành bước này trước khi tiếp tục)*
-
 ---
-**Bước 2: Tạo thư mục con `rules`**
+**Step 1: Create the root `.cursor` directory**
 ---
 
-Bên trong thư mục ".cursor" vừa tạo, hãy tạo một thư mục con tên là "rules".
+Please create a directory named ".cursor" (with a leading dot) in the project's root directory.
+After creating it, please confirm that the ".cursor" directory exists.
 
-*(Chờ Cursor xác nhận hoàn thành bước này trước khi tiếp tục)*
+*(Wait for confirmation before proceeding)*
 
 ---
-**Bước 3: Tạo file `overview.mdc`**
+**Step 2: Create the `rules` subdirectory**
 ---
 
-Bây giờ, bên trong thư mục ".cursor/rules", hãy tạo một file tên là "overview.mdc".
-Lấy nội dung cho file này từ URL sau và ghi vào file "overview.mdc":
+Inside the ".cursor" directory you just created, please create a subdirectory named "rules".
+After creating it, please confirm that the ".cursor/rules" directory exists.
+
+*(Wait for confirmation before proceeding)*
+
+---
+**Step 3: Create `overview.mdc` and verify content**
+---
+
+Inside the ".cursor/rules" directory, please create a file named "overview.mdc".
+Fetch the content for this file from the following URL and write it into the "overview.mdc" file:
 https://raw.githubusercontent.com/williamsmiths/storage/refs/heads/main/001_cursor_rules_QreOi6xrlGY/overview-example.md
 
-*(Chờ Cursor xác nhận hoàn thành bước này trước khi tiếp tục)*
+After creating the file and writing its content, please confirm that ".cursor/rules/overview.mdc" is NOT EMPTY and show me the first few lines of its content.
+
+*(Wait for confirmation and content snippet before proceeding)*
 
 ---
-**Bước 4: Tạo file `break-down-rule.mdc`**
+**Step 4: Create `break-down-rule.mdc` and verify content**
 ---
 
-Tiếp theo, bên trong thư mục ".cursor/rules", hãy tạo một file tên là "break-down-rule.mdc".
-Lấy nội dung cho file này từ URL sau và ghi vào file "break-down-rule.mdc":
+Inside the ".cursor/rules" directory, please create a file named "break-down-rule.mdc".
+Fetch the content for this file from the following URL and write it into the "break-down-rule.mdc" file:
 https://raw.githubusercontent.com/williamsmiths/storage/dedcbb5d2e55270c7908de513b9bfa82162dbeda/001_cursor_rules_QreOi6xrlGY/break-down-rule.md
 
-*(Chờ Cursor xác nhận hoàn thành bước này trước khi tiếp tục)*
+After creating the file and writing its content, please confirm that ".cursor/rules/break-down-rule.mdc" is NOT EMPTY and show me the first few lines of its content.
+
+*(Wait for confirmation and content snippet before proceeding)*
 
 ---
-**Bước 5: Tạo file `implementation-rule.mdc`**
+**Step 5: Create `implementation-rule.mdc` and verify content**
 ---
 
-Tiếp tục, bên trong thư mục ".cursor/rules", hãy tạo một file tên là "implementation-rule.mdc".
-Lấy nội dung cho file này từ URL sau và ghi vào file "implementation-rule.mdc":
+Inside the ".cursor/rules" directory, please create a file named "implementation-rule.mdc".
+Fetch the content for this file from the following URL and write it into the "implementation-rule.mdc" file:
 https://raw.githubusercontent.com/williamsmiths/storage/refs/heads/main/001_cursor_rules_QreOi6xrlGY/implementation-rule.md
 
-*(Chờ Cursor xác nhận hoàn thành bước này trước khi tiếp tục)*
+After creating the file and writing its content, please confirm that ".cursor/rules/implementation-rule.mdc" is NOT EMPTY and show me the first few lines of its content.
+
+*(Wait for confirmation and content snippet before proceeding)*
 
 ---
-**Bước 6: Tạo file `technical-design-documentation_rule.mdc`**
+**Step 6: Create `technical-design-documentation_rule.mdc` and verify content**
 ---
 
-Cuối cùng, bên trong thư mục ".cursor/rules", hãy tạo một file tên là "technical-design-documentation_rule.mdc".
-Lấy nội dung cho file này từ URL sau và ghi vào file "technical-design-documentation_rule.mdc":
+Inside the ".cursor/rules" directory, please create a file named "technical-design-documentation_rule.mdc".
+Fetch the content for this file from the following URL and write it into the "technical-design-documentation_rule.mdc" file:
 https://raw.githubusercontent.com/williamsmiths/storage/dedcbb5d2e55270c7908de513b9bfa82162dbeda/001_cursor_rules_QreOi6xrlGY/technical-design-documentation_rule.md
 
-*(Chờ Cursor xác nhận hoàn thành bước này)*
+After creating the file and writing its content, please confirm that ".cursor/rules/technical-design-documentation_rule.mdc" is NOT EMPTY and show me the first few lines of its content.
+
+*(Wait for confirmation and content snippet before proceeding)*
 
 ---
-**Hoàn thành!**
-Sau khi thực hiện tất cả các bước trên, bạn sẽ có cấu trúc thư mục như sau:
-./
-└── .cursor/
-    └── rules/
-        ├── overview.mdc
-        ├── break-down-rule.mdc
-        ├── implementation-rule.mdc
-        └── technical-design-documentation_rule.mdc
---------------------------------------------------------------------------------
+**Step 7: Create new documentation directory and `cms_ttd.md` file**
+---
+
+Please create the directory structure `./documentations/feature/` if it doesn't already exist in the project root.
+Then, create an empty file named `cms_ttd.md` inside the `./documentations/feature/` directory.
+Confirm that the file `./documentations/feature/cms_ttd.md` has been created.
+
+*(Wait for confirmation before proceeding)*
+
+---
+**Step 8: Create new documentation directory and `cms_tasks.md` file**
+---
+
+Please create the directory structure `./documentations/task/` if it doesn't already exist in the project root.
+Then, create an empty file named `cms_tasks.md` inside the `./documentations/task/` directory.
+Confirm that the file `./documentations/task/cms_tasks.md` has been created.
+
+*(Wait for confirmation before proceeding. At this point, all initial file/directory creation should be complete.)*
+
+---
+**PART 2: Customizing `.cursor/rules` Files for the Current Project**
+---
+
+**(This part should only be executed after all files in PART 1 have been successfully created and populated as specified.)**
+
+Now, please revise the content of the files within the ".cursor/rules" directory based on the specifics of the current project.
+**Remember the guiding principle: Do NOT modify any existing project code files. These changes apply ONLY to the files within `.cursor/rules`.**
+
+1.  **For the `.cursor/rules/overview.mdc` file:**
+    Update its content to provide a comprehensive overview of *this current project*. This should include:
+    *   A general project description and its primary goals.
+    *   The main directory structure of *this current project* (list key folders and their purpose).
+    *   Key technologies, frameworks, and libraries currently being used in *this current project*.
+
+2.  **For the other rule files in `.cursor/rules` (`break-down-rule.mdc`, `implementation-rule.mdc`, `technical-design-documentation_rule.mdc`):**
+    Adapt their existing content (which was fetched from generic examples) to reflect the specific guidelines, standards, and processes relevant to *this current project*. Ensure their content aligns with how tasks are broken down, how implementation should proceed, and how technical design documentation is structured *for this specific project*.
+    For example:
+    *   `.cursor/rules/break-down-rule.mdc` should detail how to break down tasks/features for *this* project, considering its workflow and team structure.
+    *   `.cursor/rules/implementation-rule.mdc` should outline coding standards, best practices, and implementation steps specific to *this* project's technology stack and architecture.
+    *   `.cursor/rules/technical-design-documentation_rule.mdc` should define the template, sections, and level of detail expected for technical design documents specifically used in *this* project.
+
+Please make these changes directly in the respective files within the ".cursor/rules" directory. After you have made the changes, please confirm.
+
+---
+**Final Check:**
+Please confirm that all requested directories and files (`.cursor/rules/*`, `./documentations/feature/cms_ttd.md`, `./documentations/task/cms_tasks.md`) exist and that the `.cursor/rules` files have been updated according to the project-specific instructions, without altering any other project code.
+---
