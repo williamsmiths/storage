@@ -29,11 +29,9 @@ After creating it, please confirm that the ".cursor/rules" directory exists.
 *(Wait for confirmation before proceeding)*
 
 ---
-**Step 3: Create `overview.mdc` and verify content**
+**Step 3: download file and rename `overview.mdc` and verify content**
 ---
 
-Inside the ".cursor/rules" directory, please create a file named "overview.mdc".
-Fetch the content for this file from the following URL and write it into the "overview.mdc" file:
 https://raw.githubusercontent.com/williamsmiths/storage/refs/heads/main/001_cursor_rules_QreOi6xrlGY/overview-example.md
 
 After creating the file and writing its content, please confirm that ".cursor/rules/overview.mdc" is NOT EMPTY and show me the first few lines of its content.
