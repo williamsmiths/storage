@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 PROMPT FILE: Comprehensive Setup for Project Documentation and Rules
 --------------------------------------------------------------------------------
-**Luôn trả lời trong chat tiếng việt**
+**Luôn chỉ trả lời trong chat với người dùng là tiếng việt, nhưng trong code, rule thì luôn là tiếng anh**
 **Overall Objective:**
 To set up a specific directory structure for project documentation and internal AI rules (`.cursor/rules`), populate initial rule files with content from provided URLs, create new empty documentation files, and then guide the AI to customize the rule files according to the current project's context.
 **Crucial Guiding Principle: At no point should any existing code files within this project be modified. All operations are strictly limited to creating or modifying the specified documentation and `.cursor` rule files.**
