@@ -39,11 +39,9 @@ After creating the file and writing its content, please confirm that ".cursor/ru
 *(Wait for confirmation and content snippet before proceeding)*
 
 ---
-**Step 4: Create `break-down-rule.mdc` and verify content**
+**Step 4: Inside the ".cursor/rules" directory, please download file and rename `break-down-rule.mdc` and verify content**
 ---
 
-Inside the ".cursor/rules" directory, please create a file named "break-down-rule.mdc".
-Fetch the content for this file from the following URL and write it into the "break-down-rule.mdc" file:
 https://raw.githubusercontent.com/williamsmiths/storage/dedcbb5d2e55270c7908de513b9bfa82162dbeda/001_cursor_rules_QreOi6xrlGY/break-down-rule.md
 
 After creating the file and writing its content, please confirm that ".cursor/rules/break-down-rule.mdc" is NOT EMPTY and show me the first few lines of its content.
@@ -51,11 +49,8 @@ After creating the file and writing its content, please confirm that ".cursor/ru
 *(Wait for confirmation and content snippet before proceeding)*
 
 ---
-**Step 5: Create `implementation-rule.mdc` and verify content**
+**Step 5: Inside the ".cursor/rules" directory, please download file and rename `implementation-rule.mdc` and verify content**
 ---
-
-Inside the ".cursor/rules" directory, please create a file named "implementation-rule.mdc".
-Fetch the content for this file from the following URL and write it into the "implementation-rule.mdc" file:
 https://raw.githubusercontent.com/williamsmiths/storage/refs/heads/main/001_cursor_rules_QreOi6xrlGY/implementation-rule.md
 
 After creating the file and writing its content, please confirm that ".cursor/rules/implementation-rule.mdc" is NOT EMPTY and show me the first few lines of its content.
@@ -63,11 +58,9 @@ After creating the file and writing its content, please confirm that ".cursor/ru
 *(Wait for confirmation and content snippet before proceeding)*
 
 ---
-**Step 6: Create `technical-design-documentation_rule.mdc` and verify content**
+**Step 6: Inside the ".cursor/rules" directory, please download file and rename `technical-design-documentation_rule.mdc` and verify content**
 ---
 
-Inside the ".cursor/rules" directory, please create a file named "technical-design-documentation_rule.mdc".
-Fetch the content for this file from the following URL and write it into the "technical-design-documentation_rule.mdc" file:
 https://raw.githubusercontent.com/williamsmiths/storage/dedcbb5d2e55270c7908de513b9bfa82162dbeda/001_cursor_rules_QreOi6xrlGY/technical-design-documentation_rule.md
 
 After creating the file and writing its content, please confirm that ".cursor/rules/technical-design-documentation_rule.mdc" is NOT EMPTY and show me the first few lines of its content.
