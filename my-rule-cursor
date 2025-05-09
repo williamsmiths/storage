@@ -1,1 +1,74 @@
 
+--------------------------------------------------------------------------------
+PROMPT FILE: Thiết lập cấu trúc thư mục và file cho .cursor/rules
+--------------------------------------------------------------------------------
+
+**Mục tiêu:** Tạo thư mục `.cursor/rules` và các file quy tắc bên trong với nội dung được lấy từ các URL cụ thể.
+
+---
+**Bước 1: Tạo thư mục gốc `.cursor`**
+---
+
+Hãy tạo một thư mục tên là ".cursor" (có dấu chấm ở đầu) trong thư mục gốc của project.
+
+*(Chờ Cursor xác nhận hoàn thành bước này trước khi tiếp tục)*
+
+---
+**Bước 2: Tạo thư mục con `rules`**
+---
+
+Bên trong thư mục ".cursor" vừa tạo, hãy tạo một thư mục con tên là "rules".
+
+*(Chờ Cursor xác nhận hoàn thành bước này trước khi tiếp tục)*
+
+---
+**Bước 3: Tạo file `overview.mdc`**
+---
+
+Bây giờ, bên trong thư mục ".cursor/rules", hãy tạo một file tên là "overview.mdc".
+Lấy nội dung cho file này từ URL sau và ghi vào file "overview.mdc":
+https://raw.githubusercontent.com/williamsmiths/storage/refs/heads/main/001_cursor_rules_QreOi6xrlGY/overview-example.md
+
+*(Chờ Cursor xác nhận hoàn thành bước này trước khi tiếp tục)*
+
+---
+**Bước 4: Tạo file `break-down-rule.mdc`**
+---
+
+Tiếp theo, bên trong thư mục ".cursor/rules", hãy tạo một file tên là "break-down-rule.mdc".
+Lấy nội dung cho file này từ URL sau và ghi vào file "break-down-rule.mdc":
+https://raw.githubusercontent.com/williamsmiths/storage/dedcbb5d2e55270c7908de513b9bfa82162dbeda/001_cursor_rules_QreOi6xrlGY/break-down-rule.md
+
+*(Chờ Cursor xác nhận hoàn thành bước này trước khi tiếp tục)*
+
+---
+**Bước 5: Tạo file `implementation-rule.mdc`**
+---
+
+Tiếp tục, bên trong thư mục ".cursor/rules", hãy tạo một file tên là "implementation-rule.mdc".
+Lấy nội dung cho file này từ URL sau và ghi vào file "implementation-rule.mdc":
+https://raw.githubusercontent.com/williamsmiths/storage/refs/heads/main/001_cursor_rules_QreOi6xrlGY/implementation-rule.md
+
+*(Chờ Cursor xác nhận hoàn thành bước này trước khi tiếp tục)*
+
+---
+**Bước 6: Tạo file `technical-design-documentation_rule.mdc`**
+---
+
+Cuối cùng, bên trong thư mục ".cursor/rules", hãy tạo một file tên là "technical-design-documentation_rule.mdc".
+Lấy nội dung cho file này từ URL sau và ghi vào file "technical-design-documentation_rule.mdc":
+https://raw.githubusercontent.com/williamsmiths/storage/dedcbb5d2e55270c7908de513b9bfa82162dbeda/001_cursor_rules_QreOi6xrlGY/technical-design-documentation_rule.md
+
+*(Chờ Cursor xác nhận hoàn thành bước này)*
+
+---
+**Hoàn thành!**
+Sau khi thực hiện tất cả các bước trên, bạn sẽ có cấu trúc thư mục như sau:
+./
+└── .cursor/
+    └── rules/
+        ├── overview.mdc
+        ├── break-down-rule.mdc
+        ├── implementation-rule.mdc
+        └── technical-design-documentation_rule.mdc
+--------------------------------------------------------------------------------
